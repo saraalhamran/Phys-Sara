@@ -2,7 +2,7 @@ body {
     font: 20px "Georgia", Times New Roman, serif;
     line-height: 1.8;
     color: #000000;
-    background-color: #FFF8E1;
+    background-color: #FFF8E1; 
     padding-top: 0px !important;
   }
 
@@ -14,7 +14,7 @@ p {font-size: 16px;}
 .margin {margin-bottom: 30px;}
 
 a {
-  color: #000000;
+  color: #6e3d52;
 }
 
 .container-fluid {
@@ -44,7 +44,7 @@ nav {
   border: 3px outset #a3a3a3;
   border-radius: 20px;
   padding: 10px 30px;
-  background-color: #f6d7c2;
+  background-color: #ffdfed;
   color: #EEE7E8;
   transition: 0.3s;
 }
@@ -53,7 +53,7 @@ nav {
   border: 3px outset #FFFFFF;
   border-radius: 20px;
   padding: 10px 30px;
-  background-color: #a3a3a3;
+  background-color: #876372;
   transition: 0.3s;
 }
 
