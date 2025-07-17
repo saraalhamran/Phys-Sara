@@ -25,7 +25,53 @@
 
 <h3>Week 6: Electronic Inputs</h3>
 
-<h4>Assignment 1: Capactive Sensor<h4>
+<h4>Wireless Charger Sensor<h4>
+
+    <img src="./wi.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
+
+  <h5> Bobby suggested this perfect idea of using a wireless charger (click here to read more) as a main feature in my final project. My plan is to make a study helper robot, which aims to store your phone for a certain period of time, which will be set up later using appropriate code and OLED screen. So for the sensor, my idea was catching two birds with one stone, using the wireless charger to both sense if the phone is on, AND charge it if it is. </h5>
+
+style="width: 400px; height: 310px;">
+
+<br>
+ <img src="./lo.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
+ <img src="./la.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
+
+<h5> I started my picking a Qi Wireless charger, and before this point I had never encountered one so this website was quite helpful. There are 5 input pins on the board, so I used a multimeter to measure different voltages before and after I charge the phone, just to see which inputs change their voltages, to know which one indicates if my phone is charging/or not. </h5>
+
+
+ <br>
+
+ <img src="./ta.png" alt="generic placeholder image"style="width: 400px; height: 450px;"> 
+
+ <h5> I used the multimeter putting the black chord on the GND part of the charger board and testing the red chord on a different input every time. From the data collected before, I made the safe assumption that the last two inputs are to be used with the microcontroller. </h5> 
+<br>
+
+ <img src="./bo.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
+
+
+<h5> Next up is the soldering station, where Bobby helped me secure two wires, one wire to GND and the other to pin. Sadly, it took so long to try to solder the GND wire, so we tried using a new Wireless Charger, and still encountered the same exact obstacle. Luckily, we discovered that cranking the temperature up to more than 70 did the job. Not recommended in all cases but it worked well for us this time! </h5>
+
+
+ <img src="./1.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
+
+<h5> As I mentioned before, from the data collected we tried both pins C and D. We tried soldering to pin C, and got ahead of time and used an oscilloscope to view the data. </h5>
+ <img src="./3.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
+ <img src="./4.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
+
+<h5> Pin C: On the oscilloscope screen, the voltage was obviously irregular. The peaks and troughs of the wave had a volatile pattern. The voltage showed a max value of 14 volts, which I thought would be dangerous and risky to deal with. </h5>
+
+ <img src="./ei.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
+<h5> Pin D: Although it was a tedious process, we decided to disregard the former pin, C, and solder to the other pin, D. Indeed, the oscilloscope showed much neater results, as there was a constant pattern, which I felt more confident using. </h5>
+
+ <img src="./no.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
+
+
+<h5> The circuit was fairly simple to put together, and a main element was the voltage divider. A voltage divider aims to distribute the voltage so the circuit uses a safe range of min and max values of volts, click here to read more about it. Connecting a 20k and 10k ohm resistor yields a voltage of nearly 5.5 volts, which is what we want. </h5>
+
+
+
+
 
 <h4>Assignment 2: [Use + Calibrate Another Sensor]</h4>
 
