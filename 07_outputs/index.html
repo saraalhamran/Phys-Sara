@@ -111,7 +111,85 @@ Uses a simple state machine to track transitions between "waiting," "charging," 
 
 LCD updates occur only when state changes or countdown ticks
 
- 
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teddy Study Buddy</title>
+
+  <!-- Light Theme Highlight.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/arduino-light.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+
+  <!-- Custom Styling -->
+  <style>
+    body {
+      background-color: #fdf6e3; /* beige background */
+    }
+    pre code {
+      background-color: transparent !important;
+      color: #2c2c2c;
+      font-family: 'Courier New', monospace;
+      border: 1px solid #ddd;
+      padding: 1em;
+      display: block;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <br>
+
+  <h4>Here is a code Snippet!</h4>
+
+  <pre><code class="language-cpp">
+#include &lt;LiquidCrystal.h&gt;
+
+const int rs = 23, en = 22, d4 = 21, d5 = 19, d6 = 18, d7 = 16;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7); // Charger pin and thresholds
+const int chargerPin = 14;
+const int chargeOnThreshold = 520;
+const int chargeOffThreshold = 480;
+
+// Rolling average filter
+const int numSamples = 20;
+int samples[numSamples] = {0};
+int sampleIndex = 0;
+
+// Timer logic
+const unsigned long studyDuration = 25 * 60; // seconds
+unsigned long countdownStart = 0;
+unsigned long chargingDetectedTime = 0;
+bool countdownRunning = false;
+
+// States
+enum State {
+  WAITING_FOR_PHONE,
+  CHARGING_DETECTED,
+  TIMER_RUNNING
+};
+
+State currentState = WAITING_FOR_PHONE;
+State lastDisplayedState = TIMER_RUNNING;
+
+void setup() {
+  lcd.begin(16, 2);
+  pinMode(chargerPin, INPUT);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Waiting for");
+  lcd.setCursor(0, 1);
+  lcd.print("phone...");
+  </code></pre>
+
+</body>
+</html>
+
+
 </h5>
 <br> </br>
 

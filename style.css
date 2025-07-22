@@ -15,7 +15,23 @@ p {font-size: 16px;}
 
 a {
   color: #6e3d52;
+
+
 }
+
+<style>
+pre code {
+  background: none !important;      /* Remove black bg */
+  background-color: #fdf6e3 !important; /* Light beige (solarized-light style) */
+  color: #333;                      /* Dark gray text */
+  font-family: 'Courier New', monospace;
+  padding: 1em;
+  display: block;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+</style>
+
 
 .container-fluid {
   padding: 0px;
