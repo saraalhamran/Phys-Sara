@@ -28,7 +28,107 @@
 
 
 <h4>Assignment: Minimum Viable Product for Final Project</h4>
+<br> </br>
 
+<h5> 
+1. Designing the Teddy Box (Fusion 360 + Laser Cutting)
+
+
+The laser cutting is still pending as I am brainstorming a smarter and more space-efficient pocket case that can hold the breadboard and charger while remaining visually fun and minimal. I plan to cut the prototype out of cardboard, then later build a polished version using either acrylic or wood. It will have:
+
+A front OLED screen window
+
+USB-C port opening
+
+Back panel access
+
+possibly a pause and reset button </h5>
+
+<br> </br>
+
+
+
+
+
+<h5>
+
+2. Input Device: Wireless Phone Charger as Sensor
+
+Objective: Use a wireless charger’s analog pin (14) to detect if a phone is placed on it and actively charging.
+
+Materials:
+
+Wireless charger module (5V, analog signal out)
+
+ESP32 Dev Board
+
+Jumper wires
+
+Wiring:
+
+Charger analog signal pin → ESP32 pin 14 (ADC)
+
+Charger VCC → ESP32 5V
+
+Charger GND → ESP32 GND
+
+Logic:
+The analog value is sampled repeatedly. The board determines if a phone is truly charging (not just hovering nearby). When the charger reads around 5.5V , we know a phone is actively charging.
+
+Feature:
+The timer only starts when a phone is confirmed as charging. This is the heart of my project. I think I did a solid job with this logic—it works well overall—but there are minor glitches when the value briefly spikes, so I’ll continue improving this logic. </h5>
+
+<br> </br>
+
+
+
+
+
+
+
+
+
+<h5>
+
+3. Output Device: LCD Timer Display (16x2)
+
+This was my first time ever using an LCD screen, so I'm pretty proud of myself! The display should show study instructions and a Pomodoro-style 25 minute countdown timer
+
+The display updates every second using millis() logic, without using the delay() function! </h5>
+<br> </br>
+
+
+
+
+<h5>
+ 4. Code Structure (C++ Style, No delay())
+
+The logic is modular and responsive:
+
+Uses a rolling average on the charger pin to detect real charging state
+
+Uses a simple state machine to track transitions between "waiting," "charging," and "timer" modes
+
+LCD updates occur only when state changes or countdown ticks
+
+ 
+</h5>
+<br> </br>
+
+
+
+<h5> Oscilloscope:
+I has already used an oscilloscope for the last assignment which was pretty helpful! It halped me determine the voltage that I should include in my code to determine wether the phone is charging or not </h5>
+<br> </br>
+
+
+<h5> Reflections & Challenges
+
+Despite the project’s seemingly simple idea, building the working prototype took many hours of testing, rewiring, and debugging. I made the mistake of wiring the potentiometer at a 90° angle to the LCD instead of in parallel, it took hours to discover this small error, and the LCD wouldn’t display anything until fixed.
+
+My proudest achievement was implementing the phone detection feature. Even though it’s not perfect yet, I created logic that reads analog voltage, averages it, and responds with meaningful states. I’ll continue refining the detection logic to make it even better.
+</h5>
+<br> </br>
 
 </div>
 </xmp>
