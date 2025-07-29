@@ -1,0 +1,558 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2820
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red131\green148\blue149;\red255\green255\blue255;\red61\green73\blue78;
+\red96\green126\blue3;\red9\green74\blue76;\red17\green134\blue139;\red199\green63\blue5;\red52\green62\blue66;
+}
+{\*\expandedcolortbl;;\cssrgb\c58431\c64706\c65098;\cssrgb\c100000\c100000\c100000;\cssrgb\c30588\c35686\c38039;
+\cssrgb\c44706\c55686\c0;\cssrgb\c0\c36078\c37255;\cssrgb\c0\c59216\c61569;\cssrgb\c82745\c32941\c0;\cssrgb\c26275\c30980\c32941;
+}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 // WebSocket code taken from RandomNerd https://randomnerdtutorials.com/esp32-websocket-server-arduino/ + the servo websockets handout code\cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 #include\cf4 \strokec4  \cf6 \strokec6 <WiFi.h>\cf4 \cb1 \strokec4 \
+\cf5 \cb3 \strokec5 #include\cf4 \strokec4  \cf6 \strokec6 <AsyncTCP.h>\cf4 \cb1 \strokec4 \
+\cf5 \cb3 \strokec5 #include\cf4 \strokec4  \cf6 \strokec6 <ESPAsyncWebServer.h>\cf4 \cb1 \strokec4 \
+\cf5 \cb3 \strokec5 #include\cf4 \strokec4  \cf6 \strokec6 <ArduinoJson.h>\cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 // Pins\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 int\cf4 \strokec4  buzz_pin = \cf6 \strokec6 25\cf4 \strokec4 ;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 // Replace with your network credentials\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 const\cf4 \strokec4  \cf7 \strokec7 char\cf4 \strokec4  *ssid = \cf6 \strokec6 "NETWORK"\cf4 \strokec4 ;\cb1 \
+\cf7 \cb3 \strokec7 const\cf4 \strokec4  \cf7 \strokec7 char\cf4 \strokec4  *password = \cf6 \strokec6 "PASSWORD"\cf4 \strokec4 ;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3 String message = \cf6 \strokec6 ""\cf4 \strokec4 ;\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 // Allocate the JSON document\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3 JsonDocument doc;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 // Create AsyncWebServer object on port 80\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3 AsyncWebServer \cf8 \strokec8 server\cf9 \strokec9 (\cf6 \strokec6 80\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3 AsyncWebSocket \cf8 \strokec8 ws\cf9 \strokec9 (\cf6 \strokec6 "/ws"\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 // Buzzer notes info. Chose 8 bc it visually fit well on the page\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 const\cf4 \strokec4  \cf7 \strokec7 int\cf4 \strokec4  n_notes = \cf6 \strokec6 8\cf4 \strokec4 ;\cb1 \
+\cf7 \cb3 \strokec7 int\cf4 \strokec4  \cf8 \strokec8 notes\cf4 \strokec4 [n_notes];\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 // Timing\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 int\cf4 \strokec4  duration_ms = \cf6 \strokec6 500\cf4 \strokec4 ;\cb1 \
+\cf7 \cb3 \strokec7 unsigned\cf4 \strokec4  \cf7 \strokec7 long\cf4 \strokec4  prev_ms = \cf6 \strokec6 0\cf4 \strokec4 ;\cb1 \
+\cf7 \cb3 \strokec7 unsigned\cf4 \strokec4  \cf7 \strokec7 long\cf4 \strokec4  current_ms;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 // Tracking song position\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 bool\cf4 \strokec4  newRequest = \cf6 \strokec6 false\cf4 \strokec4 ;\cb1 \
+\cf7 \cb3 \strokec7 int\cf4 \strokec4  song_pos = \cf6 \strokec6 0\cf4 \strokec4 ;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 // Webpage HTML, CSS, JS\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 const\cf4 \strokec4  \cf7 \strokec7 char\cf4 \strokec4  index_html[] PROGMEM = \cf6 \strokec6 R"rawliteral(\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb3 \strokec6 <!DOCTYPE HTML><html>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 <head>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   <title>8 Note Noisemaker</title>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   <meta name="viewport" content="width=device-width, initial-scale=1">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   <link rel="icon" href="data:,">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   <style>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   html \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     font-family: Arial, Helvetica, sans-serif;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     text-align: center;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   body \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     margin: 0;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   .content \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     padding: 30px;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     max-width: 90vw;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     margin: 0 auto;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   </style>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 <meta name="viewport" content="width=device-width, initial-scale=1">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 <link rel="icon" href="data:,">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 </head>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 <body>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   <div class="content">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     <h4>Select notes to play them on the piezo buzzer</h4>\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6     <form id="notesForm" accept-charset="utf-8">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         <select id="note0" name="note0" onchange="myNotes.wrangleData()">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="262">C4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="294">D4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="330">E4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="349">F4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="392">G4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="440">A4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="494">B4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="523">C5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="587">D5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="659">E5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="698">F5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="784">G5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="880">A5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         </select>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         <select id="note1" name="note1" onchange="myNotes.wrangleData()">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="262">C4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="294">D4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="330">E4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="349">F4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="392">G4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="440">A4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="494">B4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="523">C5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="587">D5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="659">E5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="698">F5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="784">G5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="880">A5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         </select>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         <select id="note2" name="note2" onchange="myNotes.wrangleData()">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="262">C4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="294">D4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="330">E4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="349">F4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="392">G4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="440">A4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="494">B4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="523">C5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="587">D5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="659">E5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="698">F5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="784">G5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="880">A5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         </select>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         <select id="note3" name="note3" onchange="myNotes.wrangleData()">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="262">C4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="294">D4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="330">E4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="349">F4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="392">G4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="440">A4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="494">B4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="523">C5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="587">D5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="659">E5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="698">F5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="784">G5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="880">A5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         </select>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         <select id="note4" name="note4" onchange="myNotes.wrangleData()">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="262">C4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="294">D4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="330">E4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="349">F4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="392">G4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="440">A4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="494">B4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="523">C5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="587">D5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="659">E5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="698">F5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="784">G5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="880">A5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         </select>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         <select id="note5" name="note5" onchange="myNotes.wrangleData()">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="262">C4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="294">D4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="330">E4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="349">F4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="392">G4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="440">A4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="494">B4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="523">C5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="587">D5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="659">E5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="698">F5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="784">G5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="880">A5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         </select>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         <select id="note6" name="note6" onchange="myNotes.wrangleData()">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="262">C4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="294">D4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="330">E4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="349">F4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="392">G4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="440">A4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="494">B4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="523">C5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="587">D5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="659">E5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="698">F5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="784">G5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="880">A5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         </select>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         <select id="note7" name="note7" onchange="myNotes.wrangleData()">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="262">C4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="294">D4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="330">E4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="349">F4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="392">G4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="440">A4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="494">B4</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="523">C5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="587">D5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="659">E5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="698">F5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="784">G5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             <option value="880">A5</option>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         </select>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         <button type="button" onclick="formatSend();">Play</button>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     </form>\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6     <div style="display: flex; height: 100%; width: 100%; justify-content: center; align-items: center;">\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         <div id="staffSvg" style="height: 40vh; width: 75%; text-align: center">\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6         </div>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     </div>\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6     \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   </div>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 <script>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   var gateway = `ws://$\{window.location.hostname\}/ws`;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   var websocket;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   window.addEventListener('load', onLoad);\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   function initWebSocket() \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     console.log('Trying to open a WebSocket connection...');\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     websocket = new WebSocket(gateway);\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     websocket.onopen    = onOpen;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     websocket.onclose   = onClose;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     websocket.onmessage = onMessage; // <-- add this line\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   function onOpen(event) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     console.log('Connection opened');\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   function onClose(event) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     console.log('Connection closed');\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     setTimeout(initWebSocket, 2000);\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   function onMessage(event) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     /* Visual feedback about currently playing note */\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     console.log(event.data);\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     // Thank you loose equality :)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     if (event.data == -1) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6       setTimeout(function() \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         myNotes.syncColor(parseInt(event.data));\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     \}, 500 * 1.3);\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     else \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6       myNotes.syncColor(parseInt(event.data));\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   function onLoad(event) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     initWebSocket();\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     function formatSend() \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         const form = document.getElementById('notesForm');\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         const formData = new FormData(form);\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         const data = \{\};\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         formData.forEach((value, key) => \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             data[key] = value;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         \});\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         websocket.send(JSON.stringify(data));\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 </script>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 <!-- d3  for svg interactivity -->\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 <script src="https://d3js.org/d3.v7.min.js"></script>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 <script src="https://d3js.org/d3-array.v2.min.js"></script>\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6 // Draws the staff and notes, changes notes pos\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 <script>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     class notesStaff \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         constructor(parentElement, notesData, selectElements) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             this.parentElement = parentElement;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             this.staffData = [0, 1, 2, 3, 4];\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             this.notesData = notesData;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             this.selectElements = selectElements;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             this.frequencies = [ // <-- from Arduino tone() docs\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 262,  // C4\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 294,  // D4\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 330,  // E4\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 349,  // F4\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 392,  // G4\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 440,  // A4\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 494,  // B4\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 523,  // C5\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 587,  // D5\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 659,  // E5\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 698,  // F5\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 784,  // G5\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 880   // A5\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             ];\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             this.initVis();\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         \}\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6         initVis() \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             let vis = this; \cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             // Margin convention\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             let parentWidth = document.getElementById(vis.parentElement).getBoundingClientRect().width;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             let parentHeight = document.getElementById(vis.parentElement).getBoundingClientRect().height;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             vis.circleRadius = parentHeight / 14;\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             vis.margin = \{ top: 2 * vis.circleRadius, right: vis.circleRadius, bottom: vis.circleRadius, left: vis.circleRadius\};\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             vis.width = parentWidth - vis.margin.left - vis.margin.right;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             vis.height = parentHeight - vis.margin.top - vis.margin.bottom;\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             // SVG drawing area\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             vis.svg = d3.select("#staffSvg").append("svg")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("width", vis.width + vis.margin.left + vis.margin.right)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("height", vis.height + vis.margin.top + vis.margin.bottom)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .append("g")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             vis.circleRadius = vis.height / 7 / 2;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             vis.bars = vis.svg.selectAll(".staffLine")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .data(vis.staffData)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .enter()\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .append("line")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("x1", 0)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("x2", vis.width)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("y1", (d, i) =>  vis.circleRadius + i * 2 * vis.circleRadius)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("y2", (d, i) =>  vis.circleRadius + i * 2 * vis.circleRadius)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("stroke", "black")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("stroke-width", 2)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("class", "staffLine");\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             console.log(vis.notesData);\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             vis.noteCircles = vis.svg.selectAll(".noteCircle")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .data(vis.notesData)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .enter()\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .append("circle")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("fill", "black")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("r", vis.circleRadius * 0.9)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("cx", (d, i) => (vis.width / 8 / 2) * (2 * i + 1))\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("stroke-width", 1)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("stroke", "black")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("class", "noteCircle") \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 /*.attr("cy", function (d) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                     return vis.height - 3 * vis.circleRadius - vis.frequencies.indexOf(d) * vis.circleRadius;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 \})*/;\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6     \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             vis.wrangleData();\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         \}\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6         // Changes circle y pos\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         wrangleData() \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             let vis = this;\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             vis.selectElements.forEach((element, i) => \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 // For single-selects, get the value of the currently selected option\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 vis.notesData[i]= parseInt(element.value);\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             \});\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6             \cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             console.log(vis.notesData);\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6             vis.svg.selectAll("circle")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .data(vis.notesData)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 .attr("cy", function (d) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                     console.log(d);\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                     return vis.height - 3 * vis.circleRadius - vis.frequencies.indexOf(d) * vis.circleRadius;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                 \});\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         \}\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6         // Makes the note red while playing (more or less)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         syncColor(noteNumber) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6           let vis = this;\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6           \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6           vis.svg.selectAll("circle")\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6               .data(vis.notesData)\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6               .attr("fill", function (d, i) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                   if (noteNumber == i) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                       return "red";\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                   else \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                       return "black";\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                   \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6               \})\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6               .attr("stroke", function (d, i) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                   if (noteNumber == i) \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                       return "red";\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                   else \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                       return "black";\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                   \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6                   \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6               \}); \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         \}\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     \}\cf4 \cb1 \strokec4 \
+\
+\cf6 \cb3 \strokec6     // Basically main.js \cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     let selectElements = document.querySelectorAll('select');\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     let selVals = [];\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     selectElements.forEach((element) => \{\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         // For single-selects, get the value of the currently selected option\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6         selVals.push(parseInt(element.value));\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     \});\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6     let myNotes = new notesStaff("staffSvg", selVals, selectElements);\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 </script>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 </body>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 </html>\cf4 \cb1 \strokec4 \
+\cf6 \cb3 \strokec6 )rawliteral"\cf4 \strokec4 ;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 // Initialize WiFi\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 void\cf4 \strokec4  \cf8 \strokec8 initWiFi\cf9 \strokec9 ()\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3   \cf8 \strokec8 WiFi\cf4 \strokec4 .\cf8 \strokec8 mode\cf9 \strokec9 (\cf4 \strokec4 WIFI_STA\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3   \cf8 \strokec8 WiFi\cf4 \strokec4 .\cf8 \strokec8 begin\cf9 \strokec9 (\cf4 \strokec4 ssid, password\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3   \cf8 \strokec8 Serial\cf4 \strokec4 .\cf8 \strokec8 println\cf9 \strokec9 (\cf6 \strokec6 "Connecting to WiFi .."\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3   \cf5 \strokec5 while\cf4 \strokec4  \cf9 \strokec9 (\cf8 \strokec8 WiFi\cf4 \strokec4 .\cf8 \strokec8 status\cf9 \strokec9 ()\cf4 \strokec4  != WL_CONNECTED\cf9 \strokec9 )\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\cb3     \cf8 \strokec8 Serial\cf4 \strokec4 .\cf8 \strokec8 println\cf9 \strokec9 (\cf4 \strokec4 '.'\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3     \cf8 \strokec8 delay\cf9 \strokec9 (\cf6 \strokec6 1000\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3   \cf9 \strokec9 \}\cf4 \cb1 \strokec4 \
+\cb3   \cf8 \strokec8 Serial\cf4 \strokec4 .\cf8 \strokec8 println\cf9 \strokec9 (\cf8 \strokec8 WiFi\cf4 \strokec4 .\cf8 \strokec8 localIP\cf9 \strokec9 ())\cf4 \strokec4 ;\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \cb3 \strokec9 \}\cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 void\cf4 \strokec4  \cf8 \strokec8 handleWebSocketMessage\cf9 \strokec9 (\cf7 \strokec7 void\cf4 \strokec4  \cf7 \strokec7 *\cf9 \strokec9 arg\cf4 \strokec4 , \cf7 \strokec7 uint8_t\cf4 \strokec4  \cf7 \strokec7 *\cf9 \strokec9 data\cf4 \strokec4 , \cf7 \strokec7 size_t\cf4 \strokec4  \cf9 \strokec9 len)\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3   AwsFrameInfo *info = \cf9 \strokec9 (\cf4 \strokec4 AwsFrameInfo*\cf9 \strokec9 )\cf4 \strokec4 arg;\cb1 \
+\cb3   \cf5 \strokec5 if\cf4 \strokec4  \cf9 \strokec9 (\cf8 \strokec8 info\cf4 \strokec4 ->\cf8 \strokec8 final\cf4 \strokec4  && \cf8 \strokec8 info\cf4 \strokec4 ->\cf8 \strokec8 index\cf4 \strokec4  == \cf6 \strokec6 0\cf4 \strokec4  && \cf8 \strokec8 info\cf4 \strokec4 ->\cf8 \strokec8 len\cf4 \strokec4  == len && \cf8 \strokec8 info\cf4 \strokec4 ->\cf8 \strokec8 opcode\cf4 \strokec4  == WS_TEXT\cf9 \strokec9 )\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\cb3     \cf8 \strokec8 data\cf4 \strokec4 [len] = \cf6 \strokec6 0\cf4 \strokec4 ;\cb1 \
+\cb3     message = \cf9 \strokec9 (\cf7 \strokec7 char\cf4 \strokec4 *\cf9 \strokec9 )\cf4 \strokec4 data;\cb1 \
+\cb3     \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2     // this is from ArduinoJson docs (https://arduinojson.org/v7/example/parser/)\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     \cf7 \strokec7 const\cf4 \strokec4  \cf7 \strokec7 char\cf4 \strokec4 * json = \cf9 \strokec9 (\cf7 \strokec7 char\cf4 \strokec4 *\cf9 \strokec9 )\cf4 \strokec4  data;\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2     // Deserialize the JSON document\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     DeserializationError error = \cf8 \strokec8 deserializeJson\cf9 \strokec9 (\cf4 \strokec4 doc, json\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2     // Test if parsing succeeds.\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     \cf5 \strokec5 if\cf4 \strokec4  \cf9 \strokec9 (\cf4 \strokec4 error\cf9 \strokec9 )\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\cb3         \cf8 \strokec8 Serial\cf4 \strokec4 .\cf8 \strokec8 print\cf9 \strokec9 (\cf8 \strokec8 F\cf9 \strokec9 (\cf6 \strokec6 "deserializeJson() failed: "\cf9 \strokec9 ))\cf4 \strokec4 ;\cb1 \
+\cb3         \cf8 \strokec8 Serial\cf4 \strokec4 .\cf8 \strokec8 println\cf9 \strokec9 (\cf8 \strokec8 error\cf4 \strokec4 .\cf8 \strokec8 f_str\cf9 \strokec9 ())\cf4 \strokec4 ;\cb1 \
+\cb3         \cf5 \strokec5 return\cf4 \strokec4 ;\cb1 \
+\cb3     \cf9 \strokec9 \}\cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2     // Put received notes into notes[] array (and make back into int which I did forget initially)\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     String key = \cf6 \strokec6 "note"\cf4 \strokec4 ;\cb1 \
+\cb3     \cf5 \strokec5 for\cf4 \strokec4  \cf9 \strokec9 (\cf7 \strokec7 int\cf4 \strokec4  i = \cf6 \strokec6 0\cf4 \strokec4 ; i < n_notes; i++\cf9 \strokec9 )\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\cb3         \cf8 \strokec8 notes\cf4 \strokec4 [i] = \cf8 \strokec8 doc\cf4 \strokec4 [key + \cf8 \strokec8 String\cf9 \strokec9 (\cf4 \strokec4 i\cf9 \strokec9 )\cf4 \strokec4 ].\cf8 \strokec8 as\cf4 \strokec4 <\cf7 \strokec7 int\cf4 \strokec4 >\cf9 \strokec9 ()\cf4 \strokec4 ;\cb1 \
+\cb3     \cf9 \strokec9 \}\cf4 \cb1 \strokec4 \
+\cb3     \cb1 \
+\cb3     \cf8 \strokec8 Serial\cf4 \strokec4 .\cf8 \strokec8 println\cf9 \strokec9 (\cf4 \strokec4 message\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\
+\cb3     newRequest = \cf6 \strokec6 true\cf4 \strokec4 ;\cb1 \
+\cb3   \cf9 \strokec9 \}\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \cb3 \strokec9 \}\cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 void\cf4 \strokec4  \cf8 \strokec8 onEvent\cf9 \strokec9 (\cf4 \strokec4 AsyncWebSocket \cf7 \strokec7 *\cf9 \strokec9 server\cf4 \strokec4 , AsyncWebSocketClient \cf7 \strokec7 *\cf9 \strokec9 client\cf4 \strokec4 , AwsEventType \cf9 \strokec9 type\cf4 \strokec4 , \cf7 \strokec7 void\cf4 \strokec4  \cf7 \strokec7 *\cf9 \strokec9 arg\cf4 \strokec4 , \cf7 \strokec7 uint8_t\cf4 \strokec4  \cf7 \strokec7 *\cf9 \strokec9 data\cf4 \strokec4 , \cf7 \strokec7 size_t\cf4 \strokec4  \cf9 \strokec9 len)\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3   \cf5 \strokec5 switch\cf4 \strokec4  \cf9 \strokec9 (\cf4 \strokec4 type\cf9 \strokec9 )\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\cb3     \cf5 \strokec5 case\cf4 \strokec4  WS_EVT_CONNECT:\cb1 \
+\cb3       \cf8 \strokec8 Serial\cf4 \strokec4 .\cf8 \strokec8 printf\cf9 \strokec9 (\cf6 \strokec6 "WebSocket client #%u connected from %s\\n"\cf4 \strokec4 , \cf8 \strokec8 client\cf4 \strokec4 ->\cf8 \strokec8 id\cf9 \strokec9 ()\cf4 \strokec4 , \cf8 \strokec8 client\cf4 \strokec4 ->\cf8 \strokec8 remoteIP\cf9 \strokec9 ()\cf4 \strokec4 .\cf8 \strokec8 toString\cf9 \strokec9 ()\cf4 \strokec4 .\cf8 \strokec8 c_str\cf9 \strokec9 ())\cf4 \strokec4 ;\cb1 \
+\cb3       \cf5 \strokec5 break\cf4 \strokec4 ;\cb1 \
+\cb3     \cf5 \strokec5 case\cf4 \strokec4  WS_EVT_DISCONNECT:\cb1 \
+\cb3       \cf8 \strokec8 Serial\cf4 \strokec4 .\cf8 \strokec8 printf\cf9 \strokec9 (\cf6 \strokec6 "WebSocket client #%u disconnected\\n"\cf4 \strokec4 , \cf8 \strokec8 client\cf4 \strokec4 ->\cf8 \strokec8 id\cf9 \strokec9 ())\cf4 \strokec4 ;\cb1 \
+\cb3       \cf5 \strokec5 break\cf4 \strokec4 ;\cb1 \
+\cb3     \cf5 \strokec5 case\cf4 \strokec4  WS_EVT_DATA:\cb1 \
+\cb3       \cf8 \strokec8 handleWebSocketMessage\cf9 \strokec9 (\cf4 \strokec4 arg, data, len\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3       \cf5 \strokec5 break\cf4 \strokec4 ;\cb1 \
+\cb3     \cf5 \strokec5 case\cf4 \strokec4  WS_EVT_PONG:\cb1 \
+\cb3     \cf5 \strokec5 case\cf4 \strokec4  WS_EVT_ERROR:\cb1 \
+\cb3       \cf5 \strokec5 break\cf4 \strokec4 ;\cb1 \
+\cb3   \cf9 \strokec9 \}\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \cb3 \strokec9 \}\cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 void\cf4 \strokec4  \cf8 \strokec8 initWebSocket\cf9 \strokec9 ()\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3   \cf8 \strokec8 ws\cf4 \strokec4 .\cf8 \strokec8 onEvent\cf9 \strokec9 (\cf4 \strokec4 onEvent\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3   \cf8 \strokec8 server\cf4 \strokec4 .\cf8 \strokec8 addHandler\cf9 \strokec9 (\cf4 \strokec4 &ws\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \cb3 \strokec9 \}\cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 void\cf4 \strokec4  \cf8 \strokec8 setup\cf9 \strokec9 ()\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2   // Serial port for debugging purposes\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3   \cf8 \strokec8 Serial\cf4 \strokec4 .\cf8 \strokec8 begin\cf9 \strokec9 (\cf6 \strokec6 115200\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3   \cf8 \strokec8 initWiFi\cf9 \strokec9 ()\cf4 \strokec4 ;\cb1 \
+\cb3   \cf8 \strokec8 initWebSocket\cf9 \strokec9 ()\cf4 \strokec4 ;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2   // Route for root / web page\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3   \cf8 \strokec8 server\cf4 \strokec4 .\cf8 \strokec8 on\cf9 \strokec9 (\cf6 \strokec6 "/"\cf4 \strokec4 , HTTP_GET, [](AsyncWebServerRequest \cf7 \strokec7 *\cf4 \strokec4  \cf9 \strokec9 request\cf4 \strokec4 ) \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\cb3     \cf8 \strokec8 request\cf4 \strokec4 ->\cf8 \strokec8 send_P\cf9 \strokec9 (\cf6 \strokec6 200\cf4 \strokec4 , \cf6 \strokec6 "text/html"\cf4 \strokec4 , index_html\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3   \cf9 \strokec9 \})\cf4 \strokec4 ;\cb1 \
+\
+\
+\cb3   \cf8 \strokec8 noTone\cf9 \strokec9 (\cf4 \strokec4 buzz_pin\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\
+\cb3   \cf8 \strokec8 server\cf4 \strokec4 .\cf8 \strokec8 begin\cf9 \strokec9 ()\cf4 \strokec4 ;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf9 \cb3 \strokec9 \}\cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 void\cf4 \strokec4  \cf8 \strokec8 loop\cf9 \strokec9 ()\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3   \cf5 \strokec5 if\cf4 \strokec4  \cf9 \strokec9 (\cf4 \strokec4 newRequest\cf9 \strokec9 )\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\cb3     \cf8 \strokec8 noTone\cf9 \strokec9 (\cf4 \strokec4 buzz_pin\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3     song_pos = \cf6 \strokec6 0\cf4 \strokec4 ;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2     //ws.textAll("playing");\cf4 \cb1 \strokec4 \
+\cf2 \cb3 \strokec2     // Play an annoying little song. Blocked from new song until it's done\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     \cf5 \strokec5 while\cf4 \strokec4  \cf9 \strokec9 (\cf4 \strokec4 song_pos < n_notes\cf9 \strokec9 )\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\cb3         current_ms = \cf8 \strokec8 millis\cf9 \strokec9 ()\cf4 \strokec4 ;\cb1 \
+\cb3         \cf5 \strokec5 if\cf4 \strokec4  \cf9 \strokec9 (\cf4 \strokec4 current_ms - prev_ms > duration_ms * \cf6 \strokec6 1.3\cf9 \strokec9 )\cf4 \strokec4  \cf9 \strokec9 \{\cf4 \cb1 \strokec4 \
+\cb3             \cf8 \strokec8 ws\cf4 \strokec4 .\cf8 \strokec8 textAll\cf9 \strokec9 (\cf8 \strokec8 String\cf9 \strokec9 (\cf4 \strokec4 song_pos\cf9 \strokec9 ))\cf4 \strokec4 ;\cb1 \
+\cb3             \cf8 \strokec8 Serial\cf4 \strokec4 .\cf8 \strokec8 println\cf9 \strokec9 (\cf8 \strokec8 notes\cf4 \strokec4 [song_pos]\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3             \cf8 \strokec8 tone\cf9 \strokec9 (\cf4 \strokec4 buzz_pin, \cf8 \strokec8 notes\cf4 \strokec4 [song_pos], duration_ms\cf9 \strokec9 )\cf4 \strokec4 ;\cb1 \
+\cb3             prev_ms = current_ms;\cb1 \
+\cb3             song_pos++;\cb1 \
+\cb3         \cf9 \strokec9 \}\cf4 \cb1 \strokec4 \
+\cb3     \cf9 \strokec9 \}\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2   // Need a delay of duration before this goes out. Actually nvm doing this in the js\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     \cf8 \strokec8 ws\cf4 \strokec4 .\cf8 \strokec8 textAll\cf9 \strokec9 (\cf8 \strokec8 String\cf9 \strokec9 (\cf4 \strokec4 -\cf6 \strokec6 1\cf9 \strokec9 ))\cf4 \strokec4 ;\cb1 \
+\
+\cb3     newRequest = \cf6 \strokec6 false\cf4 \strokec4 ;\cb1 \
+\cb3     \cf8 \strokec8 ws\cf4 \strokec4 .\cf8 \strokec8 cleanupClients\cf9 \strokec9 ()\cf4 \strokec4 ;\cb1 \
+\cb3   \cf9 \strokec9 \}\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf9 \cb3 \strokec9 \}\cf4 \cb1 \strokec4 \
+}

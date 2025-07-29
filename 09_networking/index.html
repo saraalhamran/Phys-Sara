@@ -28,12 +28,124 @@
 
 <p class="margin">   </p>
 <div class="flexrow">
-  <a id="btn" href="wk9.zip" download>Download my files from this week!
+  <a id="btn" href="buzzer_code.rtf" download>Download my code files from this week!
   </a>
 </div>
 <p class="margin">   </p>
 
-<h4>Assignment: [Program something with IOT]</h4>
+<h4>Assignment: Programming something with IOT!</h4>
+
+<br>
+<h4> Overview </h4>
+<h5> I chose to do this in a group, shoutout to Emma and Helena! For our IOT assignment, we attempted to create 2 distinct interactive systems using the ESP32s. 
+  <br>
+  <h5> 1. An 8-Note Piezo Noisemaker controlled through a WebSocket-connected web interface.</h5>
+<h5> 2. An RGB LED light controlled via Firebase Realtime Database and a custom HTML color picker.</h5>
+<br>
+
+<h3> Project 1: 8-Note WebSocket Piezo Buzzer </h3>
+<br>
+<h5> We intended to create a fun and intuitive way to control a piezo buzzer remotely. The idea was to let users pick musical notes from a dropdown menu, then send those notes to the ESP32 to be played on a piezo buzzer in real-time. This mimics the interaction style of an online synthesizer but runs locally on hardware. </h5>
+<br>
+<h4> Hardware used: </h4>
+<br>
+
+<h5> ESP32 Dev Module
+<br>
+Piezo buzzer (connected to pin 25)
+<br>
+Breadboard + jumper wires
+<br>
+Wi-Fi-enabled device to access the hosted webpage
+<br>
+<div style="display: flex; gap: 20px; align-items: center;">
+  <img src="./lo.JPG" alt="generic placeholder image" style="width: 400px; height: 310px;">
+  
+  <video width="400" height="310" controls>
+    <source src="./rawr.mov" type="video/quicktime">
+    Your browser does not support the video tag.
+  </video>
+</div>
+<br> 
+
+<h4> Web Interface + Real Time Communication </h4>
+<br>
+
+<h5> We hosted a webpage using ESPAsyncWebServer and used AsyncWebSocket for fast communication. The interface includes:
+<br>
+8 dropdowns to select different musical notes.
+<br>
+A D3.js-generated music staff that visualizes the selected notes.
+<br>
+Visual feedback (color change) when each note is played.
+
+(image)
+<br>
+
+
+<h4> How it works: </h4>
+<br>
+
+<h5> The ESP32 listens for JSON messages sent via WebSocket. When a new song is submitted:
+<br>
+The ESP parses the incoming JSON.
+<br>
+It stores the 8 note values into an array.
+<br>
+It plays each tone using tone() at 500ms intervals.
+<br>
+Simultaneously, it updates the web interface to highlight the currently playing note.
+<br>
+This setup uses millis() for non-blocking timing and only sends messages when notes are ready to be played.
+</h5>
+<br>
+
+<h3> Project 2: RGB LED Controlled via Firebase and Color Picker
+</h3>
+<br>
+<h4>Overview </h4>
+<br>
+
+<h5> The goal was to control the color of an RGB LED using Firebase Realtime Database and a web-based color picker. This project focuses on cloud-to-device communication, using Firebase as the bridge between the user and the ESP32.</h5>
+<br>
+
+
+<h4> Hardware: </h4>
+<h5> 
+  <br>
+ESP32 Dev Board
+ <br>
+Common cathode RGB LED (or 3 separate LEDs)
+ <br>
+Current-limiting resistors
+ <br>
+Breadboard + jumper wires </h5>
+
+<h4> Firebase Setup </h4>
+<br>
+
+<h5> We created a new Firebase project and successfully set up a realtime Database, and used email authentication, however we faced a later issue with the security rules later on. But the core idea was for the ESP32 to connect to the Wifi, subscribe to Firebase cahnges, and account for the updated RGB values, then setting the appropritae PWM values on the red, green and blue pins. </h5>
+<br>
+
+
+<h4> Challenges Faced </h4>
+<br>
+
+<h5> The security link, the wifi and password were fairly easy to find and caused no trouble in our code, however the firebase library we used was not being identified by firebase, which prevented the code from working at all. </h5>
+<br>
+
+
+<h4> Conclusion </h4>
+<h5> These two projects taught us how to host and manage interactive web pages on ESP32s and use websockets for real-time data transmission. We also used firebase to link cloud-based databases with microcontrollers. Cloud bases are no joke, as we learned that any troubleshoot authentication/ connectivity issues will act as an obstacle if not solved. In the future, we would love to continue with our RGB project and get it up and running!
+
+
+
+
+
+
+
+
+
 
 
 
