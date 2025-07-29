@@ -52,7 +52,7 @@
 
 <h5> ESP32 Dev Module
 <br>
-Piezo buzzer (connected to pin 25)
+Piezo buzzer (connected to GPIO 25)
 <br>
 Breadboard + jumper wires
 <br>
@@ -68,36 +68,45 @@ Wi-Fi-enabled device to access the hosted webpage
 </div>
 <br> 
 
+
 <h4> Web Interface + Real Time Communication </h4>
 <br>
 
-<h5> We hosted a webpage using ESPAsyncWebServer and used AsyncWebSocket for fast communication. The interface includes:
-<br>
+<h5> We used ESPAsyncWebServer and AsyncWebSocket libraries on the ESP32 to serve the HTML/JS frontend and receive WebSocket messages in real-time. The web interface included: <br>
 8 dropdowns to select different musical notes.
 <br>
 A D3.js-generated music staff that visualizes the selected notes.
 <br>
-Visual feedback (color change) when each note is played.
+Red circle feedback for currently playing note
 
-(image)
+
+
+
 <br>
 
 
 <h4> How it works: </h4>
 <br>
 
-<h5> The ESP32 listens for JSON messages sent via WebSocket. When a new song is submitted:
+<h5> User picks 8 notes from dropdown menus on the webpage.
 <br>
 The ESP parses the incoming JSON.
 <br>
-It stores the 8 note values into an array.
+On clicking "Play", the browser packages the selections into a JSON object using formatSend() <br>
+The JSON is sent to the ESP32 over WebSocket.
+
 <br>
-It plays each tone using tone() at 500ms intervals.
+The ESP32 receives and parses the JSON (handleWebSocketMessage()), loads the note frequencies into an array, and sets a newRequest flag to true.
+
 <br>
-Simultaneously, it updates the web interface to highlight the currently playing note.
+In the loop() function , the ESP32 iterates through the notes, using tone() to play them while sending visual cues back to the browser (ws.textAll()).
 <br>
-This setup uses millis() for non-blocking timing and only sends messages when notes are ready to be played.
+The browser uses onMessage() (image 4) to highlight the note currently being played on the D3.js staff.
+
+
 </h5>
+
+
 <br>
 
 <h3> Project 2: RGB LED Controlled via Firebase and Color Picker
@@ -131,7 +140,23 @@ Breadboard + jumper wires </h5>
 <h4> Challenges Faced </h4>
 <br>
 
-<h5> The security link, the wifi and password were fairly easy to find and caused no trouble in our code, however the firebase library we used was not being identified by firebase, which prevented the code from working at all. </h5>
+<h5> The Firebase library failed to install correctly at first. Even after downloading the ZIP manually from GitHub, compilation errors persisted. Although we managed to get Firebase authentication working and confirmed the color data was being written to the database, the ESP32 didn’t respond as expected—possibly due to security rule conflicts or data path issues.
+
+ </h5>
+<br>
+
+<h4> Progress </h4>
+<br>
+
+<h5> Firebase successfully received values from the color picker.
+
+The ESP32 failed to act on the updates—likely due to unresolved Firebase read logic or missing serial debug feedback.
+
+The RGB LED lit up once manually, indicating the hardware setup was correct.
+
+
+
+ </h5>
 <br>
 
 
