@@ -1,85 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PS70: Intro to Digital Fabrication — Week 6 (Electronic Inputs)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+  <style>
+    /* Page-specific tweaks */
+    /* Make body copy a bit larger on this page only */
+    .rich p,
+    .rich .h6,
+    .rich li { font-size: 1.15rem; line-height: 1.9; }
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+    /* Make the first (hero) image a little smaller and centered */
+    .hero-figure { max-width: 720px; margin: 0 auto 1rem; }
+    .hero-figure img { width: 100%; height: auto; display: block; }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <!-- Top Header (colors unchanged) -->
+  <nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
+    <div class="container-fluid" style="align-items: center; justify-content: center;">
+      <div class="flexrow">
+        <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
+      </div>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="../index.html">Home</a></h4>
+        <h4><a class="nav-link" href="../about.html">About</a></h4>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 6: Electronic Inputs</h3>
+  <main class="container py-4 page rich">
+    <header class="mb-3">
+      <h3>Week 6: Electronic Inputs</h3>
+    </header>
 
-<h4>Wireless Charger Sensor<h4>
+    <!-- Wireless Charger Sensor -->
+    <section class="mb-4" aria-label="Wireless Charger Sensor">
+      <h4 class="mb-2">Wireless Charger Sensor</h4>
+      <p class="h6 lh-base">
+        Bobby pitched a great idea for my final project: use a wireless charger as both the <em>sensor</em> and the <em>charger</em>.
+        The plan is to build a study helper robot that holds your phone while you focus. If the phone is on the pad and actually
+        charging, the system starts the study timer. One part does double duty — neat and efficient.
+      </p>
 
-    <img src="./wi.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
+      <!-- First picture: slightly smaller + centered -->
+      <figure class="mb-3 hero-figure">
+        <img src="./wi.png" alt="Qi wireless charger module on the bench" class="img-card" loading="lazy">
+      </figure>
+    </section>
 
-  <h5> Bobby suggested this perfect idea of using a wireless charger (click here to read more) as a main feature in my final project. My plan is to make a study helper robot, which aims to store your phone for a certain period of time, which will be set up later using appropriate code and OLED screen. So for the sensor, my idea was catching two birds with one stone, using the wireless charger to both sense if the phone is on, AND charge it if it is. </h5>
+    <!-- Picking the module + first measurements -->
+    <section class="mb-4" aria-label="Module & First Measurements">
+      <div class="row align-items-start gallery-gap">
+        <div class="col-12 col-md-6">
+          <figure><img src="./lo.png" alt="Qi charger board top view" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure><img src="./la.png" alt="Qi charger board pin labels" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+      </div>
+      <p class="h6 lh-base">
+        I picked a Qi wireless charger and, since it was my first time using one, I started by mapping the pins.
+        There are five inputs on the board. Using a multimeter, I measured voltages before and after placing a phone on
+        the pad to find which pins actually changed with a real charging event.
+      </p>
+    </section>
 
-style="width: 400px; height: 310px;">
+    <!-- Multimeter data -->
+    <section class="mb-4" aria-label="Multimeter Readings">
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./ta.png" alt="Probing charger pins with a multimeter" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+      </div>
+      <p class="h6 lh-base">
+        I clipped the black probe to charger GND and tested each candidate pin with the red probe, logging the values.
+        From those readings, I narrowed it down to the last two pins as good microcontroller inputs.
+      </p>
+    </section>
 
-<br>
- <img src="./lo.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
- <img src="./la.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
+    <!-- Soldering -->
+    <section class="mb-4" aria-label="Soldering">
+      <div class="row align-items-start gallery-gap">
+        <div class="col-12 col-md-6">
+          <figure><img src="./bo.png" alt="Soldering wires onto the charger pads" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <p class="h6 lh-base">
+            At the soldering station, we attached two leads: one to GND and one to the candidate pin. Getting GND to wet
+            was surprisingly hard on two different boards; cranking the iron temperature higher finally did the trick.
+            (Not always recommended, but it worked here.)
+          </p>
+        </div>
+      </div>
+    </section>
 
-<h5> I started my picking a Qi Wireless charger, and before this point I had never encountered one so this website was quite helpful. There are 5 input pins on the board, so I used a multimeter to measure different voltages before and after I charge the phone, just to see which inputs change their voltages, to know which one indicates if my phone is charging/or not. </h5>
+    <!-- Oscilloscope results -->
+    <section class="mb-4" aria-label="Oscilloscope Results">
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6">
+          <figure><img src="./1.png" alt="Testing pin C: oscilloscope setup" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure><img src="./3.png" alt="Pin C waveform on scope" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure><img src="./4.png" alt="Pin C: high spikes around 14V" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+      </div>
+      <p class="h6 lh-base">
+        <strong>Pin C:</strong> the scope showed volatile spikes, peaking near 14&nbsp;V — not ideal for a clean,
+        safe signal path. We ruled it out.
+      </p>
 
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6">
+          <figure><img src="./ei.png" alt="Soldering to pin D" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure><img src="./no.png" alt="Pin D waveform on scope: stable pattern" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+      </div>
+      <p class="h6 lh-base">
+        <strong>Pin D:</strong> steady and predictable. Much better candidate for detection.
+      </p>
+    </section>
 
- <br>
+    <!-- Circuit / Voltage divider -->
+    <section class="mb-4" aria-label="Circuit & Voltage Divider">
+      <p class="h6 lh-base">
+        To protect the ESP32 and keep readings stable, I added a voltage divider (20&nbsp;kΩ and 10&nbsp;kΩ).
+        That brings the signal into a safe range and smooths spikes. The rest of the circuit is straightforward:
+        common ground, charger signal into an ESP32 ADC, and serial monitoring for calibration.
+      </p>
+    </section>
 
- <img src="./ta.png" alt="generic placeholder image"style="width: 400px; height: 450px;"> 
+    <!-- Next assignment placeholder -->
+    <section aria-label="Assignment 2">
+      <h4 class="mb-2">Assignment 2: Use + Calibrate Another Sensor</h4>
+      <p class="h6 lh-base mb-0">
+        Next up, I’ll repeat the measure → verify → protect pattern with a second input, then compare detection stability
+        and latency between the two.
+      </p>
+    </section>
+  </main>
 
- <h5> I used the multimeter putting the black chord on the GND part of the charger board and testing the red chord on a different input every time. From the data collected before, I made the safe assumption that the last two inputs are to be used with the microcontroller. </h5> 
-<br>
-
- <img src="./bo.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
-
-
-<h5> Next up is the soldering station, where Bobby helped me secure two wires, one wire to GND and the other to pin. Sadly, it took so long to try to solder the GND wire, so we tried using a new Wireless Charger, and still encountered the same exact obstacle. Luckily, we discovered that cranking the temperature up to more than 70 did the job. Not recommended in all cases but it worked well for us this time! </h5>
-
-
- <img src="./1.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
-
-<h5> As I mentioned before, from the data collected we tried both pins C and D. We tried soldering to pin C, and got ahead of time and used an oscilloscope to view the data. </h5>
- <img src="./3.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
- <img src="./4.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
-
-<h5> Pin C: On the oscilloscope screen, the voltage was obviously irregular. The peaks and troughs of the wave had a volatile pattern. The voltage showed a max value of 14 volts, which I thought would be dangerous and risky to deal with. </h5>
-
- <img src="./ei.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
-<h5> Pin D: Although it was a tedious process, we decided to disregard the former pin, C, and solder to the other pin, D. Indeed, the oscilloscope showed much neater results, as there was a constant pattern, which I felt more confident using. </h5>
-
- <img src="./no.png" alt="generic placeholder image"style="width: 400px; height: 310px;"> 
-
-
-<h5> The circuit was fairly simple to put together, and a main element was the voltage divider. A voltage divider aims to distribute the voltage so the circuit uses a safe range of min and max values of volts, click here to read more about it. Connecting a 20k and 10k ohm resistor yields a voltage of nearly 5.5 volts, which is what we want. </h5>
-
-
-
-
-
-<h4>Assignment 2: [Use + Calibrate Another Sensor]</h4>
-
-</div>
-</xmp>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>

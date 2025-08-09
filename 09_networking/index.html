@@ -1,185 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PS70: Intro to Digital Fabrication — Week 9 (IoT)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <!-- Top Header (unchanged colors) -->
+  <nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
+    <div class="container-fluid" style="align-items: center; justify-content: center;">
+      <div class="flexrow">
+        <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
+      </div>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="../index.html">Home</a></h4>
+        <h4><a class="nav-link" href="../about.html">About</a></h4>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 9: Radio, WiFi, Bluetooth (IoT)</h3>
+  <main class="container py-4 page">
+    <header class="mb-3">
+      <h3>Week 9: Radio, WiFi, Bluetooth (IoT)</h3>
+    </header>
 
+    <!-- Download -->
+    <div class="d-flex justify-content-center mb-3">
+      <a id="btn" href="buzzer_code.rtf" download>Download my code files from this week!</a>
+    </div>
 
-<p class="margin">   </p>
-<div class="flexrow">
-  <a id="btn" href="buzzer_code.rtf" download>Download my code files from this week!
-  </a>
-</div>
-<p class="margin">   </p>
+    <!-- Assignment -->
+    <section class="mb-4" aria-label="Assignment">
+      <h4 class="mb-2">Assignment: Programming something with IoT</h4>
+      <div class="h6">
+        I worked with Emma and Helena to explore two small but mighty IoT builds using ESP32 boards:
+        <ul class="mt-2">
+          <li>8-Note Piezo Noisemaker controlled through a WebSocket-connected web interface</li>
+          <li>RGB LED controlled via Firebase Realtime Database + a custom HTML color picker</li>
+        </ul>
+      </div>
+    </section>
 
-<h4>Assignment: Programming something with IOT!</h4>
+    <!-- Project 1 -->
+    <section class="mb-4" aria-label="Project 1">
+      <h3 class="mb-2">Project 1: 8-Note WebSocket Piezo Buzzer</h3>
+      <p class="h6">Goal: a fun, browser-based way to pick notes and hear them played in real time on a piezo buzzer attached to the ESP32—basically a tiny hardware synth.</p>
 
-<br>
-<h4> Overview </h4>
-<h5> I chose to do this in a group, shoutout to Emma and Helena! For our IOT assignment, we attempted to create 2 distinct interactive systems using the ESP32s. 
-  <br>
-  <h5> 1. An 8-Note Piezo Noisemaker controlled through a WebSocket-connected web interface.</h5>
-<h5> 2. An RGB LED light controlled via Firebase Realtime Database and a custom HTML color picker.</h5>
-<br>
+      <div class="row align-items-start gallery-gap mt-2">
+        <div class="col-12 col-md-6">
+          <figure><img src="./lo.JPG" alt="ESP32 with piezo setup" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure class="mb-0">
+            <video class="img-card" width="100%" height="auto" controls>
+              <source src="./rawr.mov" type="video/quicktime">
+              Your browser does not support the video tag.
+            </video>
+          </figure>
+          <figcaption class="caption">Web app sends notes → ESP32 plays them on the piezo.</figcaption>
+        </div>
+      </div>
 
-<h3> Project 1: 8-Note WebSocket Piezo Buzzer </h3>
-<br>
-<h5> We intended to create a fun and intuitive way to control a piezo buzzer remotely. The idea was to let users pick musical notes from a dropdown menu, then send those notes to the ESP32 to be played on a piezo buzzer in real-time. This mimics the interaction style of an online synthesizer but runs locally on hardware. </h5>
-<br>
-<h4> Hardware used: </h4>
-<br>
+      <div class="row mt-3">
+        <div class="col-12 col-md-6">
+          <h4 class="mb-2">Hardware used</h4>
+          <ul class="h6 mb-0">
+            <li>ESP32 Dev Module</li>
+            <li>Piezo buzzer (GPIO 25)</li>
+            <li>Breadboard + jumper wires</li>
+            <li>Any Wi-Fi device to access the webpage</li>
+          </ul>
+        </div>
+        <div class="col-12 col-md-6">
+          <h4 class="mb-2">Web interface & realtime</h4>
+          <ul class="h6 mb-0">
+            <li><code>ESPAsyncWebServer</code> serves a simple HTML/JS page</li>
+            <li><code>AsyncWebSocket</code> streams note selections instantly</li>
+            <li>8 dropdowns for notes + a D3.js staff visualization</li>
+            <li>Live “currently playing” feedback in the UI</li>
+          </ul>
+        </div>
+      </div>
 
-<h5> ESP32 Dev Module
-<br>
-Piezo buzzer (connected to GPIO 25)
-<br>
-Breadboard + jumper wires
-<br>
-Wi-Fi-enabled device to access the hosted webpage
-<br>
-<div style="display: flex; gap: 20px; align-items: center;">
-  <img src="./lo.JPG" alt="generic placeholder image" style="width: 400px; height: 310px;">
-  
-  <video width="400" height="310" controls>
-    <source src="./rawr.mov" type="video/quicktime">
-    Your browser does not support the video tag.
-  </video>
-</div>
-<br> 
+      <h4 class="mt-3 mb-2">How it works</h4>
+      <ol class="h6">
+        <li>User picks 8 notes in the browser.</li>
+        <li>On “Play,” the page builds a JSON payload (<code>formatSend()</code>) and sends it over WebSocket.</li>
+        <li>ESP32 (<code>handleWebSocketMessage()</code>) parses it, loads frequencies, sets <code>newRequest</code>.</li>
+        <li>In <code>loop()</code> the ESP32 iterates notes, uses <code>tone()</code>, and pushes UI updates back.</li>
+      </ol>
+    </section>
 
+    <!-- Project 2 -->
+    <section class="mb-4" aria-label="Project 2">
+      <h3 class="mb-2">Project 2: RGB LED via Firebase + Color Picker</h3>
+      <p class="h6">Goal: change an RGB LED’s color from anywhere, using Firebase Realtime Database as the cloud bridge.</p>
 
-<h4> Web Interface + Real Time Communication </h4>
-<br>
+      <div class="row mt-2">
+        <div class="col-12 col-md-6">
+          <h4 class="mb-2">Hardware</h4>
+          <ul class="h6 mb-0">
+            <li>ESP32 Dev Board</li>
+            <li>Common-cathode RGB LED (or 3 discrete LEDs)</li>
+            <li>Current-limiting resistors</li>
+            <li>Breadboard + jumpers</li>
+          </ul>
+        </div>
+        <div class="col-12 col-md-6">
+          <h4 class="mb-2">Firebase setup</h4>
+          <p class="h6 mb-0">New Firebase project + Realtime Database. ESP32 connects to Wi-Fi, listens for RGB updates, then sets PWM on R/G/B pins. Email auth worked; later we hit security-rules hiccups.</p>
+        </div>
+      </div>
 
-<h5> We used ESPAsyncWebServer and AsyncWebSocket libraries on the ESP32 to serve the HTML/JS frontend and receive WebSocket messages in real-time. The web interface included: <br>
-8 dropdowns to select different musical notes.
-<br>
-A D3.js-generated music staff that visualizes the selected notes.
-<br>
-Red circle feedback for currently playing note
+      <h4 class="mt-3 mb-2">Challenges faced</h4>
+      <p class="h6">The Firebase library fought us during install; even the ZIP route threw compile errors. We could write color data to the DB and authenticate, but the ESP32 didn’t react—likely rules or data-path issues.</p>
 
+      <h4 class="mb-2">Progress</h4>
+      <ul class="h6">
+        <li>Color picker → Firebase writes confirmed</li>
+        <li>LED worked once when driven manually (hardware OK)</li>
+        <li>Next step: fix read logic / DB rules and add clearer serial debug</li>
+      </ul>
+    </section>
 
+    <!-- Conclusion -->
+    <section aria-label="Conclusion">
+      <h4 class="mb-2">Conclusion</h4>
+      <p class="h6">This week taught me to host interactive pages on the ESP32, stream realtime data with WebSockets, and connect microcontrollers to cloud databases. Also: cloud auth/rules can block progress fast—good docs and debug prints are everything. I want to circle back and finish the RGB pipeline end-to-end.</p>
+    </section>
+  </main>
 
-
-<br>
-
-
-<h4> How it works: </h4>
-<br>
-
-<h5> User picks 8 notes from dropdown menus on the webpage.
-<br>
-The ESP parses the incoming JSON.
-<br>
-On clicking "Play", the browser packages the selections into a JSON object using formatSend() <br>
-The JSON is sent to the ESP32 over WebSocket.
-
-<br>
-The ESP32 receives and parses the JSON (handleWebSocketMessage()), loads the note frequencies into an array, and sets a newRequest flag to true.
-
-<br>
-In the loop() function , the ESP32 iterates through the notes, using tone() to play them while sending visual cues back to the browser (ws.textAll()).
-<br>
-The browser uses onMessage() (image 4) to highlight the note currently being played on the D3.js staff.
-
-
-</h5>
-
-
-<br>
-
-<h3> Project 2: RGB LED Controlled via Firebase and Color Picker
-</h3>
-<br>
-<h4>Overview </h4>
-<br>
-
-<h5> The goal was to control the color of an RGB LED using Firebase Realtime Database and a web-based color picker. This project focuses on cloud-to-device communication, using Firebase as the bridge between the user and the ESP32.</h5>
-<br>
-
-
-<h4> Hardware: </h4>
-<h5> 
-  <br>
-ESP32 Dev Board
- <br>
-Common cathode RGB LED (or 3 separate LEDs)
- <br>
-Current-limiting resistors
- <br>
-Breadboard + jumper wires </h5>
-
-<h4> Firebase Setup </h4>
-<br>
-
-<h5> We created a new Firebase project and successfully set up a realtime Database, and used email authentication, however we faced a later issue with the security rules later on. But the core idea was for the ESP32 to connect to the Wifi, subscribe to Firebase cahnges, and account for the updated RGB values, then setting the appropritae PWM values on the red, green and blue pins. </h5>
-<br>
-
-
-<h4> Challenges Faced </h4>
-<br>
-
-<h5> The Firebase library failed to install correctly at first. Even after downloading the ZIP manually from GitHub, compilation errors persisted. Although we managed to get Firebase authentication working and confirmed the color data was being written to the database, the ESP32 didn’t respond as expected—possibly due to security rule conflicts or data path issues.
-
- </h5>
-<br>
-
-<h4> Progress </h4>
-<br>
-
-<h5> Firebase successfully received values from the color picker.
-
-The ESP32 failed to act on the updates—likely due to unresolved Firebase read logic or missing serial debug feedback.
-
-The RGB LED lit up once manually, indicating the hardware setup was correct.
-
-
-
- </h5>
-<br>
-
-
-<h4> Conclusion </h4>
-<h5> These two projects taught us how to host and manage interactive web pages on ESP32s and use websockets for real-time data transmission. We also used firebase to link cloud-based databases with microcontrollers. Cloud bases are no joke, as we learned that any troubleshoot authentication/ connectivity issues will act as an obstacle if not solved. In the future, we would love to continue with our RGB project and get it up and running!
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-</xmp>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>

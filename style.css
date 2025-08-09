@@ -1,31 +1,72 @@
+/* ================== Global Font ================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+/* ================== Base & Background ================== */
+html, body { height: 100%; }
+
 body {
-    font: 20px "Georgia", Times New Roman, serif;
-    line-height: 1.8;
-    color: #000000;
-    background-color: #FFF8E1; 
-    padding-top: 0px !important;
-  }
+  font-family: 'Poppins', 'Georgia', 'Times New Roman', serif;
+  font-size: 20px;
+  line-height: 1.8;
+  color: #000000;
+  padding-top: 0 !important;
+  position: relative;
+  overflow-x: hidden;
+  background-color: #FFF8E1; /* fallback while image loads */
+}
 
+/* Fixed, full-site background image (path is relative to THIS file) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("law.jpg") center center / cover no-repeat;
+  z-index: -1;
+}
+
+/* Make common UI elements inherit the base font */
+h1, h2, h3, h4, h5, h6,
+.navbar, .nav-link, p, a, button, input, textarea {
+  font-family: inherit;
+}
+
+/* ================== Content Overlays ================== */
+/* Wrap your main content in .page or .textcontainer for readability */
+.page,
 .textcontainer {
-  padding: 2% 10%;;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 1rem;
+  padding: 2rem;
 }
 
-p {font-size: 16px;}
-.margin {margin-bottom: 30px;}
+.textcontainer { padding: 2% 10%; }
 
-a {
-  color: #6e3d52;
+/* ================== Typography & Spacing ================== */
+p { font-size: 16px; }
+.margin { margin-bottom: 30px; }
 
+/* ================== Links ================== */
+a { color: #6e3d52; }
 
+/* ================== Layout Helpers ================== */
+.container-fluid { padding: 0; }
+.row { margin: auto auto; }
+.flexrow { display: flex; justify-content: space-evenly; }
+.center-row { display: flex; justify-content: center; }
+
+/* Optional fixed-height helpers for gallery images */
+.h-260 { height: 260px; }
+.h-300 { height: 300px; }
+.h-340 { height: 340px; }
+.h-380 { height: 380px; }
+
+/* Bootstrap grid spacing helper for galleries */
+.gallery-gap > [class^="col"],
+.gallery-gap > [class*=" col"] {
+  margin-bottom: 1rem;
 }
 
-
-
-.container-fluid {
-  padding: 0px;
-  /*padding-bottom: 70px;*/
-}
-
+/* ================== Navbar (colors unchanged) ================== */
 nav {
   background-color: #e6b0aa;
   color: #EEE7E8;
@@ -38,7 +79,7 @@ nav {
   gap: 30px;
 }
 
-.nav-title{
+.nav-title {
   margin-left: 15px;
   margin-right: 15px;
   color: #000000;
@@ -61,6 +102,7 @@ nav {
   transition: 0.3s;
 }
 
+/* ================== Buttons ================== */
 #btn {
   border: 3px outset #FFFFFF;
   border-radius: 40px;
@@ -78,26 +120,14 @@ nav {
   transition: 0.3s;
 }
 
-.row {
-  margin: auto auto;
-}
-
-.flexrow {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.center-row {
-  display: flex;
-  justify-content: center;
-}
-
+/* ================== Code Blocks ================== */
 code {
   background-color: #2d2b33;
   color: #EEE7E8;
   font-family: 'Courier New', Courier, monospace;
 }
 
+/* ================== Captions ================== */
 .caption {
   color: gray;
   font-size: 16px;
@@ -105,6 +135,69 @@ code {
   font-style: italic;
 }
 
-#aboutme {
-  padding: 20px;
+/* ================== Misc ================== */
+#aboutme { padding: 20px; }
+
+/* ================== Signature Image Style ================== */
+.img-card {
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  border: 4px solid rgba(179, 231, 186, 0.52); /* your green border */
+  display: block;
 }
+
+/* Ensure images fit nicely when used with fixed heights */
+.img-tight { object-fit: cover; width: 100%; height: 100%; }
+
+/* ===== Hard reset for ANY code highlighter (HLJS/Prism/Prettify/etc.) ===== */
+
+/* kill backgrounds on all common code elements & libraries */
+pre,
+pre code,
+code,
+.hljs, .hljs *,
+.prettyprint, .prettyprint code,
+code[class*="language-"], pre[class*="language-"] {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* some highlighters wrap each line in spans – remove pill backgrounds */
+pre code > span,
+pre code > span > span,
+.hljs-ln-line, .line-numbers-rows > span {
+  background: transparent !important;
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+/* enforce your light card style for full blocks */
+pre {
+  background: rgba(255, 255, 255, 0.85) !important;   /* soft white over bg */
+  border: 1px solid rgba(179, 231, 186, 0.52) !important;
+  border-radius: 16px !important;
+  padding: 18px 22px !important;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* code text */
+pre code {
+  color: #1f2937 !important; /* near-black */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  white-space: pre !important; /* no wrapping */
+  word-break: normal !important;
+}
+
+/* inline code (outside <pre>) gets a tiny chip */
+:not(pre) > code {
+  background: rgba(0,0,0,0.04) !important;
+  border-radius: 6px !important;
+  padding: .15rem .35rem !important;
+  color: #111 !important;
+}
+

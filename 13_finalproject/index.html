@@ -1,112 +1,221 @@
-
+<!DOCTYPE html>
 <html lang="en">
-
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
-
-<
-
-
-
-
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
-
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PS70: Intro to Digital Fabrication — Final Project</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('./law.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    main { max-width: 4000px; }
+    section { margin-top: 2.25rem; }
+    .lead-wrap { max-width: 2000px; }
+    .img-card {
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+           border: 4px solid rgba(19, 80, 27, 0.52);
+    }
+    .img-tight { object-fit: cover; width: 100%; height: 100%; }
+    .h-260 { height: 260px; }
+    .h-300 { height: 300px; }
+    .h-340 { height: 340px; }
+    .h-380 { height: 380px; }
+    .gallery-gap > [class^="col"], .gallery-gap > [class*=" col"] { margin-bottom: 1rem; }
+    figure { margin: 0; }
+    figcaption { font-size: .9rem; color: #6c757d; margin-top: .35rem; }
+    .nav-title { margin: 0; }
+  </style>
+</head>
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin"></p>
+  <!-- Original Top Header -->
+  <nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
+    <div class="container-fluid" style="align-items: center; justify-content: center;">
+      <div class="flexrow">
+        <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
+      </div>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="../index.html">Home</a></h4>
+        <h4><a class="nav-link" href="../about.html">About</a></h4>
+      </div>
+    </div>
+  </nav>
 
+  <main class="container py-4">
+    <header class="mb-3">
+      <h3 class="mb-3">Final Project: Study With Teddy</h3>
+      <figure class="mb-4">
+        <img src="./1.JPG" alt="Study With Teddy hero" class="img-fluid img-card" loading="lazy">
+      </figure>
+      <div class="lead-wrap">
+        <p class="h5 lh-base">Procrastination is a serious trap that I find myself falling into one too many times. This can take on many formats, but for me, it usually means doomscrolling on my phone endlessly rather than doing my work. This poses as a huge problem, especially with a student like me, who is responsible for a rigorous academic schedule in school alongside time-consuming extracurriculars as well. To solve this issue, I decided to create Teddy! Teddy is a study robot that is kind enough to watch over your phone as you study AND charge it for you, making it a win-win situation! Teddy is designed to implement my favorite studying method, the Pomodoro! This method entails 25 minutes of work, followed by a 10-minute break after each session. I have learned a lot of lessons from this project, and I cannot wait for you to embark om the journey of Teddy’s creation with me!</p>
+      </div>
+    </header>
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PS70: Intro to Digital Fabrication — Final Project</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style.css" rel="stylesheet">
-  </head>
+    <!-- Quick montage row -->
+    <section aria-label="Build montage">
+      <div class="row gallery-gap">
+        <div class="col-6 col-md-4">
+          <figure class="h-300"><img src="./charger1.JPG" alt="Wireless charger" class="img-tight img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-6 col-md-4">
+          <figure class="h-300"><img src="./solder2.JPG" alt="Soldering work" class="img-tight img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-4">
+          <figure class="h-300"><img src="./lo.JPG" alt="Layout view" class="img-tight img-card" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
 
-  <body>
-   
+    <!-- Calipers -->
+    <section aria-label="Calipers">
+      <div class="row gallery-gap">
+        <div class="col-6 col-md-6">
+          <figure class="h-300"><img src="./calliper1.JPG" alt="Using calipers" class="img-tight img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-6 col-md-6">
+          <figure class="h-300"><img src="./calliper2.JPG" alt="Measuring parts" class="img-tight img-card" loading="lazy"></figure>
+        </div>
+      </div>
+      <p class="h5 mt-2">Callipers were lilke my best friends! Never going back to rulers after this. PRetty much all of my parts were small enough to measure withh a calliper which was neat.</p>
+      <div class="row gallery-gap mt-2">
+        <div class="col-6 col-md-6">
+          <figure class="h-300"><img src="./charger1.JPG" alt="Charger again" class="img-tight img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-6 col-md-6">
+          <figure class="h-300"><img src="./voltage.JPG" alt="Voltage reading" class="img-tight img-card" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
 
-    <main class="container py-4">
+    <!-- Wireless Charger -->
+    <section aria-label="Wireless Charger">
+      <h3 class="mt-4">Wireless Charger</h3>
+      <p class="h5 lh-base">For my sensor input assignment, I decided to incorporate a wireless charger that was already available in the lab. The first challenge was integrating it reliably into my circuit. Bobby helped me solder a GND wire to the charger, and along the way we learned a key lesson: when soldering onto the small pads of a wireless charger, crank the iron heat high or the solder won&#39;t wet properly and you&#39;ll risk lifting pads with repeated attempts. After getting ground in place, the next step was figuring out how to detect when a phone was actively charging. Bobby suggested a smart approach &mdash; using a multimeter to measure the voltage of each accessible pad before and after connecting to GND. By comparing these readings, we could identify which pads changed when a phone was present, revealing the most reliable signal for phone detection.</p>
 
-<h3>Final Project: Study With Teddy </h3>
-<br> </br>
+      <div class="row gallery-gap mt-3">
+        <div class="col-12 col-md-4"><figure class="h-300"><img src="./data.JPG" alt="Pad measurements" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-12 col-md-4"><figure class="h-300"><img src="./data2.JPG" alt="More readings" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-12 col-md-4"><figure class="h-300"><img src="./data3.JPG" alt="Oscilloscope setup" class="img-tight img-card" loading="lazy"></figure></div>
+      </div>
 
-<h4>Procrastination is a serious trap that I find myself falling into one too many times. This can take on many formats, but for me, it usually means doomscrolling on my phone endlessly rather than doing my work. This poses as a huge problem, especially with a student like me, who is responsible for a rigorous academic schedule in school alongside time-consuming extracurriculars as well. To solve this issue, I decided to create Teddy! Teddy is a study robot that is kind enough to watch over your phone as you study AND charge it for you, making it a win-win situation! Teddy is designed to implement my favorite studying method, the Pomodoro! This method entails 25 minutes of work, followed by a 10-minute break after each session. I have learned a lot of lessons from this project, and I cannot wait for you to embark om the journey of Teddy’s creation with me! </h4>
-<br> </br>
+      <p class="h5 mt-3">To verify this hypothesis, we connected the charger to an oscilloscope to visualize voltage patterns over time. One of the pins displayed volatile, high-voltage spikes, peaking near 14V. While interesting, that instability made it unsafe and unreliable for our design, so we eliminated it immediately.</p>
+      <p class="h5">Another pin, however, produced a steady, predictable voltage level that was much more manageable. It consistently maxed out at a safe value for interfacing, which made it ideal for monitoring charging activity without risking damage to the ESP32. We selected this pin as our data source and soldered an ADC lead to it so the microcontroller could read changes in voltage and determine whether a phone was present and charging.</p>
 
-<h3> Wireless Charger </h3><br> </br>
-<h4>For my sensor input assignment, I decided to incorporate a wireless charger that was already available in the lab. The first challenge was integrating it reliably into my circuit. Bobby helped me solder a GND wire to the charger, and along the way we learned a key lesson: when soldering onto the small pads of a wireless charger, crank the iron heat high or the solder won&#39;t wet properly and you&#39;ll risk lifting pads with repeated attempts. After getting ground in place, the next step was figuring out how to detect when a phone was actively charging. Bobby suggested a smart approach &mdash; using a multimeter to measure the voltage of each accessible pad before and after connecting to GND. By comparing these readings, we could identify which pads changed when a phone was present, revealing the most reliable signal for phone detection.</h4><br> </br>
+      <div class="row gallery-gap">
+        <div class="col-6 col-md-6"><figure class="h-300"><img src="./circuit.JPG" alt="Charger circuit" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-6"><figure class="h-300"><img src="./resistors.JPG" alt="Voltage divider" class="img-tight img-card" loading="lazy"></figure></div>
+      </div>
+    </section>
 
-<h4>To verify this hypothesis, we connected the charger to an oscilloscope to visualize voltage patterns over time. One of the pins displayed volatile, high-voltage spikes, peaking near 14V. While interesting, that instability made it unsafe and unreliable for our design, so we eliminated it immediately.</h4><br> </br>
+    <!-- Circuitry -->
+    <section aria-label="Circuitry">
+      <h3 class="mt-4">Circuitry</h3>
+      <p class="h5">Once soldering was complete, the rest of the wireless charger setup was straightforward. The charger connected to the ESP32 on a breadboard with a common ground shared by all components. The charger&#39;s signal output went to one of the ESP32&#39;s ADC pins for monitoring in code. To keep voltage within a safe range, I added a voltage divider using a 20k&Omega; and a 10k&Omega; resistor. The divider not only protects the microcontroller from spikes but also stabilizes readings over time, which is crucial for reliable detection.</p>
+    </section>
 
-<h4>Another pin, however, produced a steady, predictable voltage level that was much more manageable. It consistently maxed out at a safe value for interfacing, which made it ideal for monitoring charging activity without risking damage to the ESP32. We selected this pin as our data source and soldered an ADC lead to it so the microcontroller could read changes in voltage and determine whether a phone was present and charging.</h4> <br> </br>
+    <!-- LCD gallery -->
+    <section aria-label="LCD">
+      <div class="row gallery-gap">
+        <div class="col-4"><figure class="h-300"><img src="./lcd2.JPG" alt="LCD wiring" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-4"><figure class="h-300"><img src="./lcd3.JPG" alt="LCD test" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-4"><figure class="h-300"><img src="./lcd4.JPG" alt="LCD contrast" class="img-tight img-card" loading="lazy"></figure></div>
+      </div>
 
-<h3> Circuitry</h3><br> </br>
-<h4>Once soldering was complete, the rest of the wireless charger setup was straightforward. The charger connected to the ESP32 on a breadboard with a common ground shared by all components. The charger&#39;s signal output went to one of the ESP32&#39;s ADC pins for monitoring in code. To keep voltage within a safe range, I added a voltage divider using a 20k&Omega; and a 10k&Omega; resistor. The divider not only protects the microcontroller from spikes but also stabilizes readings over time, which is crucial for reliable detection.</h4> <br> </br>
+      <h3 class="mt-3">LCD screen display</h3>
+      <p class="h5">Setting up the LCD was one of the most challenging yet satisfying parts. I wired it entirely on my own. Even though it&#39;s a small component, the LCD demands precise pin mapping, correct power, and careful contrast control. I spent hours rearranging wires, checking datasheets, and verifying every connection. That effort convinced me to create a complete circuit diagram with labeled colored wires. What felt &quot;extra&quot; at first turned out to be essential for sanity and speed during debugging.</p>
+      <h3 class="mt-3">ALWAYS HAVE A CIRCUIT DIAGRAM that tells you which colored wire goes where. NO, IT IS NOT EXTRA — it is in fact essential.</h3>
 
-<h3>LCD screen display</h3><br> </br>
-<h4>Setting up the LCD was one of the most challenging yet satisfying parts. I wired it entirely on my own. Even though it&#39;s a small component, the LCD demands precise pin mapping, correct power, and careful contrast control. I spent hours rearranging wires, checking datasheets, and verifying every connection. That effort convinced me to create a complete circuit diagram with labeled colored wires. What felt &quot;extra&quot; at first turned out to be essential for sanity and speed during debugging.</h4><br> </br>
-<h3>ALWAYS HAVE A CIRCUIT DIAGRAM that tells you which colored wire goes where. NO, IT IS NOT EXTRA &mdash; it is in fact essential.</h3><br> </br>
+      <div class="row gallery-gap mt-2">
+        <div class="col-12 col-md-6"><figure class="h-340"><img src="./diagram.JPG" alt="Circuit diagram" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-12 col-md-6"><figure class="h-340"><img src="./lcdroom.JPG" alt="LCD in room" class="img-tight img-card" loading="lazy"></figure></div>
+      </div>
 
-<h4>Even with the diagram, the LCD refused to light up at first. After countless rewires, I found the culprit: the contrast potentiometer was wired incorrectly. It was effectively perpendicular instead of parallel to the LCD connections. Correcting that tiny detail instantly brought the screen to life and taught me how small wiring choices can make or break a circuit.</h4><br> </br>
+      <p class="h5 mt-3">Even with the diagram, the LCD refused to light up at first. After countless rewires, I found the culprit: the contrast potentiometer was wired incorrectly. It was effectively perpendicular instead of parallel to the LCD connections. Correcting that tiny detail instantly brought the screen to life and taught me how small wiring choices can make or break a circuit.</p>
+      <h3 class="mt-2">CONNECT YOUR POTENTIOMETER PARALLEL TO THE LCD SCREEN ON THE BREADBOARD, not perpendicular. A small change that makes all the difference!</h3>
 
-<h3>CONNECT YOUR POTENTIOMETER PARALLEL TO THE LCD SCREEN ON THE BREADBOARD, not perpendicular. A small change that makes all the difference!</h3> <br> </br>
+      <p class="h5 mt-3">With the LCD working and brightness controlled via the potentiometer, I moved on to programming text and countdown timers. After that, I integrated the wireless charger detection into the same system. Seeing the ESP32 read charging status and update the display in real time was a huge milestone and proof that the hardware and software were playing nicely together.</p>
+    </section>
 
-<h3> Completed Circuit</h3><br> </br>
-<h4>With the LCD working and brightness controlled via the potentiometer, I moved on to programming text and countdown timers. After that, I integrated the wireless charger detection into the same system. Seeing the ESP32 read charging status and update the display in real time was a huge milestone and proof that the hardware and software were playing nicely together.</h4> <br> </br>
+    <!-- Phone Detection -->
+    <section aria-label="Phone Detection">
+      <h3 class="mt-4">Phone Detection</h3>
+      <p class="h5">Calibrating detection was trickier than expected. The serial monitor showed inconsistent ADC readings when a phone was placed on the charger, which made a single threshold unreliable. At first, the system would false-trigger or miss real events. Kassia suggested adding a second threshold and requiring consistent samples before confirming charging status. That debounced the signal and dramatically improved stability, eliminating the glitchiness I saw early on.</p>
+    </section>
 
-<h3> Phone Detection</h3> <br> </br>
-<h4>Calibrating detection was trickier than expected. The serial monitor showed inconsistent ADC readings when a phone was placed on the charger, which made a single threshold unreliable. At first, the system would false-trigger or miss real events. Kassia suggested adding a second threshold and requiring consistent samples before confirming charging status. That debounced the signal and dramatically improved stability, eliminating the glitchiness I saw early on.</h4> <br> </br>
+    <!-- Casing & fabrication gallery -->
+    <section aria-label="Casing">
+      <div class="row gallery-gap">
+        <div class="col-6 col-md-3"><figure class="h-260"><img src="./box.JPG" alt="Box view A" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-3"><figure class="h-260"><img src="./box1.JPG" alt="Box view B" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-3"><figure class="h-260"><img src="./box.JPG" alt="Box view A duplicate" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-3"><figure class="h-260"><img src="./cutter.JPG" alt="Laser cutter" class="img-tight img-card" loading="lazy"></figure></div>
+      </div>
+      <h3 class="mt-2">Casing</h3>
+      <p class="h5">I am no CAD wizard, so designing an efficient case in Fusion 360 took time. It taught me several lessons:<br>
+        1. Take highly accurate measurements and confirm them before laser cutting.<br>
+        2. Keep the size practical; bigger is not automatically better.<br>
+        My first pass leaned more &quot;artsy&quot; than functional. The result: wrong dimensions, hand-cut fixes, re-lasered parts, and last-minute holes for microcontroller wiring. All of that was avoidable with better planning for assembly and internal routing. It was a great reminder to design for how things will actually be built and wired.</p>
+      <p class="h5">I assembled Teddy with both wood glue and hot glue depending on the joint. I also thought about travel durability since it had to survive a 16-hour flight in my suitcase. The finished prototype balances sturdiness with a friendly look, and I was happy with how it handled transport.</p>
 
-<h3> Casing</h3> <br> </br>
-<h4>I am no CAD wizard, so designing an efficient case in Fusion 360 took time. It taught me several lessons:<br> </br>
-1. Take highly accurate measurements and confirm them before laser cutting.<br> </br>
-2. Keep the size practical; bigger is not automatically better.<br> </br>
-My first pass leaned more &quot;artsy&quot; than functional. The result: wrong dimensions, hand-cut fixes, re-lasered parts, and last-minute holes for microcontroller wiring. All of that was avoidable with better planning for assembly and internal routing. It was a great reminder to design for how things will actually be built and wired.</h4> <br> </br>
+      <div class="row gallery-gap mt-2">
+        <div class="col-4"><figure class="h-300"><img src="./fusion.JPG" alt="Fusion sketch" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-4"><figure class="h-300"><img src="./fusion2.JPG" alt="Fusion parts" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-4"><figure class="h-300"><img src="./fusion3.JPG" alt="Fusion assembly" class="img-tight img-card" loading="lazy"></figure></div>
+      </div>
 
-<h4>I assembled Teddy with both wood glue and hot glue depending on the joint. I also thought about travel durability since it had to survive a 16-hour flight in my suitcase. The finished prototype balances sturdiness with a friendly look, and I was happy with how it handled transport.</h4><br> </br>
+      <p class="h5">Visually, I especially love Teddy&#39;s head. The curved forms gave it personality and made me want to explore more organic shapes in future CAD projects. It&#39;s obvious this is a first iteration, but as an MVP it set up everything I&#39;d want to perfect next time.</p>
+    </section>
 
-<h4>Visually, I especially love Teddy&#39;s head. The curved forms gave it personality and made me want to explore more organic shapes in future CAD projects. It&#39;s obvious this is a first iteration, but as an MVP it set up everything I&#39;d want to perfect next time.</h4><br> </br>
+    <!-- Soldering gallery -->
+    <section aria-label="Soldering">
+      <div class="row gallery-gap">
+        <div class="col-6 col-md-3"><figure class="h-300"><img src="./solder.JPG" alt="Solder 1" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-3"><figure class="h-300"><img src="./solder2.JPG" alt="Solder 2" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-3"><figure class="h-300"><img src="./solder4.JPG" alt="Solder 4" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-3"><figure class="h-300"><img src="./solder5.JPG" alt="Solder 5" class="img-tight img-card" loading="lazy"></figure></div>
+      </div>
+      <div class="row gallery-gap">
+        <div class="col-6 col-md-3"><figure class="h-300"><img src="./solder6.JPG" alt="Solder 6" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-3"><figure class="h-300"><img src="./solder7.JPG" alt="Solder 7" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-3"><figure class="h-300"><img src="./midnight.JPG" alt="Late night build" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-3"><figure class="h-300"><img src="./values.JPG" alt="Component values" class="img-tight img-card" loading="lazy"></figure></div>
+      </div>
 
-<h3> Soldering </h3> <br> </br>
-<h4>I spent nearly eight hours at the soldering station. Transferring from a neat breadboard to a compact protoboard is a different skill entirely. Early mistakes included forgetting to make essential jump connections, which left parts of the circuit floating; struggling to remove solder until I got comfortable with copper braid and a pump; placing components in the wrong spots; and accidentally creating solder bridges that took ages to undo. Huge thanks to Isabella for guiding me through the trickier fixes &mdash; by the end, my rework time dropped and the joints looked clean and consistent.</h4>
+      <h3 class="mt-2">Soldering</h3>
+      <p class="h5">I spent nearly eight hours at the soldering station. Transferring from a neat breadboard to a compact protoboard is a different skill entirely. Early mistakes included forgetting to make essential jump connections, which left parts of the circuit floating; struggling to remove solder until I got comfortable with copper braid and a pump; placing components in the wrong spots; and accidentally creating solder bridges that took ages to undo. Huge thanks to Isabella for guiding me through the trickier fixes — by the end, my rework time dropped and the joints looked clean and consistent.</p>
+    </section>
 
-<h3>Final Product</h3><br> </br>
-<h4>Teddy turned into more than a study aid; it became a personal milestone that combined engineering, problem-solving, and design. The 25-minute timer is already useful in real study sessions, and friends like using it too. Next, I&#39;m building a companion app to visualize daily and weekly study time from the data the ESP32 already records, so users get motivating feedback. I also plan to prototype Bobby&#39;s motorized shutter idea to physically lock the phone until the timer ends &mdash; an extra layer of accountability against distraction.</h4><br> </br>
+    <!-- Final Product -->
+    <section aria-label="Final Product">
+      <h3 class="mt-4">Final Product</h3>
+      <p class="h5">Teddy turned into more than a study aid; it became a personal milestone that combined engineering, problem-solving, and design. The 25-minute timer is already useful in real study sessions, and friends like using it too. Next, I&#39;m building a companion app to visualize daily and weekly study time from the data the ESP32 already records, so users get motivating feedback. I also plan to prototype Bobby&#39;s motorized shutter idea to physically lock the phone until the timer ends — an extra layer of accountability against distraction.</p>
+      <div class="row gallery-gap">
+        <div class="col-6 col-md-6"><figure class="h-340"><img src="./wi.JPG" alt="With phone" class="img-tight img-card" loading="lazy"></figure></div>
+        <div class="col-6 col-md-6"><figure class="h-340"><img src="./wo.JPG" alt="Without phone" class="img-tight img-card" loading="lazy"></figure></div>
+      </div>
+    </section>
 
-<h3>Presentation day</h3><br> </br>
-<h4>I was nervous to present because I knew there was room to refine the design, but the feedback was encouraging. People immediately connected with the problem Teddy solves and loved the shutter concept. Their reactions gave me fresh energy to keep developing this beyond the class.</h4><br> </br>
+    <!-- Presentation day -->
+    <section aria-label="Presentation">
+      <h3 class="mt-4">Presentation day</h3>
+      <p class="h5">I was nervous to present because I knew there was room to refine the design, but the feedback was encouraging. People immediately connected with the problem Teddy solves and loved the shutter concept. Their reactions gave me fresh energy to keep developing this beyond the class.</p>
+    </section>
 
-<h3>Word of Thanks:</h3><br> </br>
-<h4>I want to thank my amazing TAs: Kassia, Bobby, and Jessica. Your patience and guidance made the process not just possible but fun. Kassia, you were crucial on my CNC guitar project and your suggestion stabilized my phone detection logic. Bobby, Teddy was directly inspired by your insult robot, and your soldering/testing tips saved me hours. Jessica, your encouragement powered me through long build sessions. And a big thank you to Nathan for his wisdom and inspiring architecture work. PS70 will always be a highlight of my summer. Check out Bobby&#39;s project here: <a href="https://bobbymmccarthy.github.io/ps70/finalProject.html" target="_blank" rel="noopener">Insult Robot</a>.</h4><br> </br>
+    <!-- Thanks -->
+    <section aria-label="Thanks">
+      <h3 class="mt-4">Word of Thanks:</h3>
+      <p class="h5">I want to thank my amazing TAs: Kassia, Bobby, and Jessica. Your patience and guidance made the process not just possible but fun. Kassia, you were crucial on my CNC guitar project and your suggestion stabilized my phone detection logic. Bobby, Teddy was directly inspired by your insult robot, and your soldering/testing tips saved me hours. Jessica, your encouragement powered me through long build sessions. And a big thank you to Nathan for his wisdom and inspiring architecture work. PS70 will always be a highlight of my summer. Check out Bobby&#39;s project here: <a href="https://bobbymmccarthy.github.io/ps70/finalProject.html" target="_blank" rel="noopener">Insult Robot</a>.</p>
+    </section>
 
-    </main>
+  </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
-</html>
-
-
-
-</div>
-</xmp>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>
+

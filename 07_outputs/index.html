@@ -1,163 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
-
-<body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
-
-<h3>Week 7: Electronic Outputs</h3>
-
-
-<h4> I would like to say that even though this might not seem like much progress, I have devoted most of my time into this for the past few days, and I/ am proud of my work but still looking forward to pushing my ideas byond my horizon. Shoutout to Bobby for his help, could not have done it wihout his guidance. This was also my first time ever hooking up a tool on the breadboard and coding it while knowing absolutely nothing about it, so that was quite the journey! I did waste so much time on silly mistakes, but it is safe to conclude that I am avoiding those pitfalls in the future. </h4> 
-
-
-
-
-<br> </br>
- <img src="./1.png" alt="generic placeholder image" style="width: 700px; height: 470px;"> 
- <br>
-  <img src="./2.png" alt="generic placeholder image" style="width: 360px; height: 310px;"> 
-   <img src="./3.png" alt="generic placeholder image" style="width: 360px; height: 310px;"> 
- <img src="./ku.png" alt="generic placeholder image" style="width: 360px; height: 310px;"> 
-
-
-
-<h5> 
-1. Designing the Teddy Box (Fusion 360 + Laser Cutting)
-
-
-The laser cutting is still pending as I am brainstorming a smarter and more space-efficient pocket case that can hold the breadboard and charger while remaining visually fun and minimal. I plan to cut the prototype out of cardboard, then later build a polished version using either acrylic or wood. It will have:
-
-A front LCD screen window, USB-C port opening and possibly pause and reset buttons. </h5>
-
-<br> </br>
-
-
- <img src="./4.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
-
-
-
-<h5>
-
-2. Input Device: Wireless Phone Charger as Sensor
-
-Objective: Use a wireless charger’s analog pin (14) to detect if a phone is placed on it and actively charging.
-
-Materials:
-
-Wireless charger module (5V, analog signal out)
-
-ESP32 Dev Board
-
-Jumper wires
-
-Wiring:
-
-Charger analog signal pin → ESP32 pin 14 (ADC)
-
-Charger VCC → ESP32 5V
-
-Charger GND → ESP32 GND
-
-Logic:
-The analog value is sampled repeatedly. The board determines if a phone is truly charging (not just hovering nearby). When the charger reads around 5.5V , we know a phone is actively charging.
-
-Feature:
-The timer only starts when a phone is confirmed as charging. This is the heart of my project. I think I did a solid job with this logic—it works well overall—but there are minor glitches when the value briefly spikes, so I’ll continue improving this logic. </h5>
-
-<br> </br>
-
-
- <img src="./10.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
- <br> 
- <img src="./20.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
-
- <img src="./30.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
-
- <img src="./40.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
-
-
-
-
-
-<h5>
-
-3. Output Device: LCD Timer Display (16x2)
-
-This was my first time ever using an LCD screen, so I'm pretty proud of myself! The display should show study instructions and a Pomodoro-style 25 minute countdown timer
-
-The display updates every second using millis() logic, without using the delay() function! </h5>
-<br> </br>
-
- <img src="./wa.png" alt="generic placeholder image" style="width: 400px; height: 310px;"> 
-
-
-
-<h5>
- 4. Code Structure (C++ Style, No delay())
-
-The logic is modular and responsive:
-
-Uses a rolling average on the charger pin to detect real charging state
-
-Uses a simple state machine to track transitions between "waiting," "charging," and "timer" modes
-
-LCD updates occur only when state changes or countdown ticks
-
-
-
-
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Teddy Study Buddy</title>
-
-  <!-- Light Theme Highlight.js -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/arduino-light.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script>hljs.highlightAll();</script>
-
-  <!-- Custom Styling -->
-  <style>
-    body {
-      background-color: #fdf6e3; /* beige background */
-    }
-    pre code {
-      background-color: transparent !important;
-      color: #2c2c2c;
-      font-family: 'Courier New', monospace;
-      border: 1px solid #ddd;
-      padding: 1em;
-      display: block;
-      border-radius: 8px;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PS70: Intro to Digital Fabrication — Week 7 (Electronic Outputs)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
 </head>
 
 <body>
-  <br>
+  <!-- Top Header (colors unchanged) -->
+  <nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
+    <div class="container-fluid" style="align-items: center; justify-content: center;">
+      <div class="flexrow">
+        <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
+      </div>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="../index.html">Home</a></h4>
+        <h4><a class="nav-link" href="../about.html">About</a></h4>
+      </div>
+    </div>
+  </nav>
 
-  <h4>Here is a code Snippet!</h4>
+  <main class="container py-4 page">
+    <header class="mb-3">
+      <h3>Week 7: Electronic Outputs</h3>
+    </header>
 
-  <pre><code class="language-cpp">
+    <!-- Intro -->
+    <section class="mb-4" aria-label="Overview">
+      <p class="h6 lh-base">
+        This week was a grind in the best way. It may not look like huge progress, but I spent
+        a ton of hours wiring, testing, and learning-by-doing — and I’m proud of it. Big thanks
+        to Bobby for the guidance. This was my first time hooking up a new tool on a breadboard
+        and coding it from scratch. I made my fair share of rookie mistakes, but I’m already
+        avoiding those pitfalls now.
+      </p>
+    </section>
+
+    <!-- Hero image -->
+    <section class="mb-4" aria-label="Build Photos">
+      <figure class="mb-3">
+        <img src="./1.png" alt="Breadboarded setup progress shot" class="img-card img-fluid" loading="lazy">
+      </figure>
+
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-4">
+          <figure><img src="./2.png" alt="Close-up wiring 1" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-4">
+          <figure><img src="./3.png" alt="Close-up wiring 2" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-4">
+          <figure><img src="./ku.png" alt="Component layout" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: Enclosure -->
+    <section class="mb-4" aria-label="Teddy Box Design">
+      <h4 class="mb-2">1) Designing the Teddy Box (Fusion 360 + Laser Cutting)</h4>
+      <p class="h6 lh-base">
+        I’m sketching a smarter, more space-efficient pocket case to hold the breadboard and charger
+        while keeping things fun and minimal. I’ll prototype in cardboard, then move to acrylic or
+        wood. Planned features include:
+      </p>
+      <ul class="h6">
+        <li>Front LCD window</li>
+        <li>USB-C port opening</li>
+        <li>Optional pause / reset buttons</li>
+      </ul>
+
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./4.png" alt="Fusion 360 planning" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Input Device -->
+    <section class="mb-4" aria-label="Input Device">
+      <h4 class="mb-2">2) Input Device: Wireless Phone Charger as Sensor</h4>
+
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <p class="h6 lh-base mb-2"><strong>Objective:</strong> Use the charger’s analog output to detect when a phone is actually charging (not just nearby).</p>
+          <p class="h6 lh-base mb-2"><strong>Materials:</strong> Wireless charger module (5V), ESP32 Dev Board, jumper wires.</p>
+          <p class="h6 lh-base mb-2"><strong>Wiring:</strong></p>
+          <ul class="h6">
+            <li>Charger analog signal → ESP32 <code>pin 14 (ADC)</code></li>
+            <li>Charger VCC → ESP32 <code>5V</code></li>
+            <li>Charger GND → ESP32 <code>GND</code></li>
+          </ul>
+          <p class="h6 lh-base">
+            <strong>Logic:</strong> sample the analog value repeatedly, apply a rolling average, and only confirm
+            “charging” when the readings are stable (around the known threshold). The timer starts
+            only when charging is confirmed — core to my project. It works well overall; occasional
+            spikes still happen, so I’ll keep improving the filter.
+          </p>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="row gallery-gap">
+            <div class="col-6">
+              <figure><img src="./10.png" alt="Signal pin probing" class="img-card img-fluid" loading="lazy"></figure>
+            </div>
+            <div class="col-6">
+              <figure><img src="./20.png" alt="Breadboard with charger module" class="img-card img-fluid" loading="lazy"></figure>
+            </div>
+            <div class="col-6">
+              <figure><img src="./30.png" alt="ESP32 wiring detail" class="img-card img-fluid" loading="lazy"></figure>
+            </div>
+            <div class="col-6">
+              <figure><img src="./40.png" alt="ADC read test" class="img-card img-fluid" loading="lazy"></figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: LCD Output -->
+    <section class="mb-4" aria-label="LCD Output">
+      <h4 class="mb-2">3) Output Device: LCD Timer Display (16×2)</h4>
+      <p class="h6 lh-base">
+        First time using an LCD — and I got a Pomodoro-style 25-minute countdown working. The screen
+        shows instructions and updates once per second using <code>millis()</code> (no <code>delay()</code>).
+      </p>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./wa.png" alt="LCD wired on breadboard" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Code Structure -->
+    <section class="mb-4" aria-label="Code Structure">
+      <h4 class="mb-2">4) Code Structure (C++ style, no <code>delay()</code>)</h4>
+      <ul class="h6">
+        <li>Rolling average on the charger pin to confirm real charging</li>
+        <li>Simple state machine: <em>waiting</em> → <em>charging</em> → <em>timer</em></li>
+        <li>LCD only updates on state change or countdown tick</li>
+      </ul>
+
+      <h4 class="mt-3 mb-2">Here is a code snippet</h4>
+      <pre><code class="language-cpp">
 #include &lt;LiquidCrystal.h&gt;
 
 const int rs = 23, en = 22, d4 = 21, d5 = 19, d6 = 18, d7 = 16;
@@ -195,35 +180,32 @@ void setup() {
   lcd.print("Waiting for");
   lcd.setCursor(0, 1);
   lcd.print("phone...");
-  </code></pre>
+}
+</code></pre>
+    </section>
 
+    <!-- Oscilloscope -->
+    <section class="mb-4" aria-label="Oscilloscope">
+      <h4 class="mb-2">Oscilloscope</h4>
+      <p class="h6 lh-base">
+        I used the scope last week and again here — super helpful for finding a stable voltage range
+        to decide when a phone is truly charging.
+      </p>
+    </section>
+
+    <!-- Reflections -->
+    <section aria-label="Reflections">
+      <h4 class="mb-2">Reflections & Challenges</h4>
+      <p class="h6 lh-base">
+        Simple idea, lots of wiring and debugging. I accidentally wired the potentiometer
+        perpendicular to the LCD instead of in parallel — that tiny mistake cost hours until I
+        found it. My favorite win so far is the phone-detection logic: reading analog voltage,
+        averaging it, and reacting with meaningful states. I’ll keep tuning the thresholds and
+        filtering to make it bulletproof.
+      </p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
-
-
-</h5>
-<br> </br>
-
-
-
-<h5> Oscilloscope:
-I has already used an oscilloscope for the last assignment which was pretty helpful! It halped me determine the voltage that I should include in my code to determine wether the phone is charging or not </h5>
-<br> </br>
-
-
-<h5> Reflections & Challenges
-
-Despite the project’s seemingly simple idea, building the working prototype took many hours of testing, rewiring, and debugging. I made the mistake of wiring the potentiometer at a 90° angle to the LCD instead of in parallel, it took hours to discover this small error, and the LCD wouldn’t display anything until fixed.
-
-My proudest achievement was implementing the phone detection feature. Even though it’s not perfect yet, I created logic that reads analog voltage, averages it, and responds with meaningful states. I’ll continue refining the detection logic to make it even better.
-</h5>
-<br> </br>
-
-</div>
-</xmp>
-</body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>
