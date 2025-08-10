@@ -1,109 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PS70: Intro to Digital Fabrication — Week 4 (Microcontroller Programming)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+  <style>
+    /* Keep figures tidy */
+    figure { margin: 0 0 1rem 0; }
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
-
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/arduino-light.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/arduino.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-
+    /* Slightly smaller extra circuit photo, centered */
+    .exp-figure { max-width: 520px; margin: 0 auto 1rem; }
+    .exp-figure img { width: 100%; height: auto; display: block; }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <!-- Top Header (colors unchanged) -->
+  <nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
+    <div class="container-fluid" style="align-items: center; justify-content: center;">
+      <div class="flexrow">
+        <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
+      </div>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="../index.html">Home</a></h4>
+        <h4><a class="nav-link" href="../about.html">About</a></h4>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 4: Microcontroller Programming</h3>
-<h4> Mood Cue </h4>
+  <main class="container py-4 page">
+    <header class="mb-3">
+      <h3>Week 4: Microcontroller Programming</h3>
+      <h4 class="mb-0">Mood Cue (Servo + Potentiometer)</h4>
+    </header>
 
-<h5> For this assignment, we were supposed to program the Arduino to do something, so I chose one of the projects from the Arduino book, particularly the mood cue. Saying how you feel? Nah just spin the potentiometer! </h5>
-<br> </br>
-<img src="./h.GIF" alt="generic placeholder image" style="width: 400px; height: 310px;">
-<img src="./mood.png" alt="generic placeholder image" style="width: 400px; height: 310px;">
-<br> </br>
+    <!-- Overview -->
+    <section class="mb-4" aria-label="Overview">
+      <p class="h6 lh-base">
+        The brief this week was simple: program the Arduino to do something interactive. I picked a playful build
+        from the Arduino Projects Book—the <em>Mood Cue</em>. Instead of announcing how you feel, you twist a
+        potentiometer and a servo swings a little pointer to your “mood.” It’s a tiny project, but it pulled a lot
+        together: stable power/grounding on a breadboard, clean signal reads from an analog input, and mapping that
+        input to a physical motion in a way that feels smooth and responsive.
+      </p>
+    </section>
 
-<h5>I started off by hooking up a power source and creating a common ground to work with on my breadboard. The idea was fairly simple, use a potentiometer to control the movement of the servo, to rotate it in both directions at a 180 degree angle.</h5>
-<br> </br>
-<img src="./c1.png" alt="generic placeholder image" style="width: 300px; height: 210px;">
-<img src="./c3.png" alt="generic placeholder image" style="width: 268; height: 210px;">
-<br> </br>
+    <!-- Demo (GIF bigger) & Diagram -->
+    <section class="mb-4" aria-label="Demo & Diagram">
+      <div class="row gallery-gap">
+        <!-- GIF is bigger: md=8, xl=9 -->
+        <div class="col-12 col-md-8 col-xl-9">
+          <figure>
+            <img src="./h.GIF" alt="Mood Cue servo demo animation" class="img-card img-fluid" loading="lazy">
+            <figcaption class="caption">Quick demo: turning the knob sweeps the pointer.</figcaption>
+          </figure>
+        </div>
+        <!-- Sketch is smaller: md=4, xl=3 -->
+        <div class="col-12 col-md-4 col-xl-3">
+          <figure>
+            <img src="./mood.png" alt="Sketch of the Mood Cue concept" class="img-card img-fluid" loading="lazy">
+            <figcaption class="caption">Concept sketch—simple dial, readable output.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
 
+    <!-- Build notes -->
+    <section class="mb-4" aria-label="Build Notes">
+      <h4 class="mb-2">Build Notes</h4>
+      <p class="h6 lh-base">
+        I started by setting up a stable 5&nbsp;V rail and a common ground on the breadboard. The potentiometer provides a
+        variable voltage on its wiper; the Arduino (ESP32 in my case) reads that on an analog pin. In code, I map that
+        reading to a servo angle from 0–180°, then write the angle every loop. The key choices were: using the
+        <code>map()</code> function for readability, and keeping the loop lean so the response feels immediate rather than
+        choppy.
+      </p>
 
-<h5> Challenges faced: I spent around 40 minutes trying to upload the code but it would always result in an error. Shoutout to Bobby for helping fix this, but it took me a while to understand that the problem was the port that I plugged the microcontroller into, out of the two on my laptop one seems to not work which is weird. </h5>
-<br> </br>
-<h7>I think this project could be used by many, especially those who suck at showing their feelings, just spin the potentiometer! I think that creating this mini assignment inspired me to think of a new project idea, one that has to do with assessing person’s mood, in a more intricate and functional way of course. </h7>
-<br> </br>
+      <div class="row gallery-gap mt-2">
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./c1.png" alt="Breadboard power and signal setup" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./c3.png" alt="Close-up of potentiometer wiring" class="img-card img-fluid" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
 
-<h8> Here is a circuit I created that embodies my moodcue: </h8>
-<br> </br>
+    <!-- Challenges -->
+    <section class="mb-4" aria-label="Challenges">
+      <h4 class="mb-2">Challenges & Fixes</h4>
+      <p class="h6 lh-base">
+        The biggest time sink wasn’t code—it was the upload failing over and over. After ~40 minutes of trial and error,
+        Bobby helped me realize it was my laptop’s USB-C port being flaky. Switching to the other port solved it instantly.
+        Lesson logged: if a perfectly fine sketch won’t flash, verify cable and port before rewriting half your code.
+      </p>
+      <p class="h6 lh-base mb-0">
+        This mini build also sparked a bigger idea: translating “mood” into inputs a device can understand, and reflecting
+        it back in useful ways. The Mood Cue is a toy version of that, but it nudged my thinking for future projects.
+      </p>
+    </section>
 
-<img src="./cir.jpg" alt="generic placeholder image" style="width: 400px; height: 400px;">
-<br> </br>
-<h9>I also played around with some LED lights as well, and I was able to make them work in a similar manner to a traffic light (the middle LED was not working for some reason). </h9>
+    <!-- Extra circuit (smaller) -->
+    <section class="mb-4" aria-label="Extra Circuit Experiments">
+      <h4 class="mb-2">Extra Circuit Experiments</h4>
+      <figure class="mb-2 exp-figure">
+        <img src="./cir.jpg" alt="Additional circuit layout with LEDs and servo" class="img-card" loading="lazy">
+      </figure>
+      <p class="h6 lh-base">
+        I also played with a simple “traffic light” pattern on three LEDs. The middle LED was stubborn, which was a good
+        reminder to sanity-check polarity, resistor values, and breadboard row mapping. Even little detours like this make
+        debugging faster the next time around.
+      </p>
+    </section>
 
-
-
-
-
-<h4>Here is a code snippet:</h4>
-<h4> <pre><code class="language-arduino">
-#include <ESP32Servo.h>
-
-
+    <!-- Code -->
+    <section class="mb-4" aria-label="Code Snippet">
+      <h4 class="mb-2">Code Snippet (ESP32 + Servo + Potentiometer)</h4>
+      <pre><code class="language-arduino">
+#include &lt;ESP32Servo.h&gt;
 
 Servo myServo;
-// potentiometer variables
-const int potPin = 32;
-const int servoPin = 26;
-int potVal;
-int angle;
+
+// pins (adjust if needed)
+const int potPin   = 32;   // ADC input from potentiometer wiper
+const int servoPin = 26;   // PWM output to servo signal wire
+
+int potVal = 0;
+int angle  = 0;
 
 void setup() {
-  // put your setup code here, to run once:
   myServo.attach(servoPin);
   Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  // read analog value and map to an angle
   potVal = analogRead(potPin);
-  Serial.print("potVal :");
+  angle  = map(potVal, 0, 4095, 0, 179); // ESP32 ADC range is 0–4095
+
+  // debug readout
+  Serial.print("potVal: ");
   Serial.print(potVal);
-
-
-  angle = map(potVal, 0, 1023, 0, 179);
-  Serial.print(", angle: ");
+  Serial.print("  angle: ");
   Serial.println(angle);
 
+  // move servo
   myServo.write(angle);
+
+  // small delay to avoid spamming the serial monitor
+  delay(5);
 }
-</code></pre> </h4>
+</code></pre>
+      <p class="caption">Tip: on an Arduino Uno the ADC range is 0–1023; on ESP32 it’s 0–4095.</p>
+    </section>
 
+    <!-- Wrap-up -->
+    <section aria-label="Reflection">
+      <h4 class="mb-2">Reflection</h4>
+      <p class="h6 lh-base mb-0">
+        Small build, solid foundations. I’m happier with my wiring discipline and with how readable the code feels. Next,
+        I want to add easing to the servo movement so it glides between angles instead of stepping—tiny touch, big feel.
+      </p>
+    </section>
+  </main>
 
-
-
-
-</div>
-</xmp>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>

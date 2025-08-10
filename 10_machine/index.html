@@ -7,9 +7,16 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="../style.css" rel="stylesheet">
   <style>
-    /* Ensure cards always keep natural image proportions */
+    /* Keep natural image proportions */
     img.img-card { width: 100%; height: auto; display: block; }
     figure { margin: 0 0 1rem 0; }
+
+    /* Make the FIRST five big, single images a little smaller */
+    .shrink {
+      max-width: 900px; /* tweak this number if you want more/less shrink */
+      margin: 0 auto;   /* center within the page */
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -36,7 +43,7 @@
       <h4>Assembling Materials</h4>
       <div class="row gallery-gap">
         <div class="col-12">
-          <figure><img src="./1.png" alt="Removing supports from 3D prints" class="img-card img-fluid" loading="lazy"></figure>
+          <figure class="shrink"><img src="./1.png" alt="Removing supports from 3D prints" class="img-card img-fluid" loading="lazy"></figure>
         </div>
       </div>
       <p class="h6 lh-base">We started by removing the supports from the 3D-printed green structural parts given to us. You can see the remaining support material lodged in narrow holes and tight corners, which made the task especially tedious. This was the moment we realized that tweezers were not strong enough to be effective. Instead, we started using plastic cutters for thicker support pieces and metal pokers to reach deep into the screw holes and crevices.</p>
@@ -47,7 +54,7 @@
       <h4>First Steps</h4>
       <div class="row gallery-gap">
         <div class="col-12">
-          <figure><img src="./2.png" alt="Laid out parts for planning" class="img-card img-fluid" loading="lazy"></figure>
+          <figure class="shrink"><img src="./2.png" alt="Laid out parts for planning" class="img-card img-fluid" loading="lazy"></figure>
         </div>
       </div>
       <p class="h6 lh-base">After removing all the supports, we organized the 3D-printed parts on the table to assess what we had. We were trying to understand the function of each part, where gears would go, how the belt would loop around the system, and how to support the overall frame. Without instructions, we assembled the basic parts relying on various reference images we found online. This was also when we began to brainstorm how to make our machine draw using more than one pen.</p>
@@ -58,7 +65,7 @@
       <h4>Screwing Components</h4>
       <div class="row gallery-gap">
         <div class="col-12">
-          <figure><img src="./3.png" alt="Fitting frame and gears with screws" class="img-card img-fluid" loading="lazy"></figure>
+          <figure class="shrink"><img src="./3.png" alt="Fitting frame and gears with screws" class="img-card img-fluid" loading="lazy"></figure>
         </div>
       </div>
       <p class="h6 lh-base">We had just started testing how the frame and gears were supposed to fit together. One of the most frustrating parts was figuring out which screws worked with which holes. Some were too short, others were too wide, and we kept going back and forth swapping them out to see what would actually hold the parts together. It took a lot of patience and guessing to get it right, especially with the gears—since they needed to be secure but still able to rotate freely. Even though it was a struggle, we were finally starting to see the machine come to life.</p>
@@ -69,7 +76,7 @@
       <h4>Timing Belt</h4>
       <div class="row gallery-gap">
         <div class="col-12">
-          <figure><img src="./4.png" alt="Routing and tensioning the timing belt" class="img-card img-fluid" loading="lazy"></figure>
+          <figure class="shrink"><img src="./4.png" alt="Routing and tensioning the timing belt" class="img-card img-fluid" loading="lazy"></figure>
         </div>
       </div>
       <p class="h6 lh-base">This was a tricky process as the belt kept slipping off or not aligning properly with the gears. We had to keep adjusting the position of the motor and tensioning the belt so that it would stay on track without skipping. It was also hard to tell at first how tight the belt was supposed to be: too loose and it would not move, too tight and it would strain the motor. It was frustrating, but it helped us understand how precise things need to be when working with moving parts.</p>
@@ -80,7 +87,7 @@
       <h4>Belt Problems</h4>
       <div class="row gallery-gap">
         <div class="col-12">
-          <figure><img src="./5.png" alt="Belt skipping and base stability issues" class="img-card img-fluid" loading="lazy"></figure>
+          <figure class="shrink"><img src="./5.png" alt="Belt skipping and base stability issues" class="img-card img-fluid" loading="lazy"></figure>
         </div>
       </div>
       <p class="h6 lh-base">We were testing how well the belt moved once everything was assembled. While it was exciting to see parts of the machine moving, we quickly ran into more problems. The belt kept skipping steps, and sometimes it would not grip properly at all. We realized part of the issue was not securing the base of the machine, as it kept shifting around when the motor started running. This made everything shake, which messed up the motion of the belt. It was a bit discouraging after all the work we had done to align everything. Still, it helped us realize that we needed to focus not just on the parts themselves, but also on how the machine sits on the surface.</p>
@@ -443,7 +450,3 @@ void home() {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-      
- 
-

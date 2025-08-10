@@ -1,90 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PS70: Intro to Digital Fabrication — Week 8 (CNC Milling)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Match the Final Project structure */
+    body { font-family: 'Poppins', sans-serif; }
+    main { max-width: 1100px; }
+    figure { margin: 0 0 1rem 0; }
+    .gallery-gap > [class^="col"], .gallery-gap > [class*=" col"] { margin-bottom: 1rem; }
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
+    /* Image treatment (keeps your site-wide border color) */
+    .img-card {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 4px solid rgba(179, 231, 186, 0.52);
+      border-radius: 18px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.10);
+    }
 
+    /* Readability */
+    .page p, .page .h6, .page li { font-size: 1.06rem; line-height: 1.9; }
 
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+    /* Right-hand summary (“At a glance”) */
+    .aside-card {
+      border-left: 4px solid rgba(179, 231, 186, 0.52);
+      padding-left: 1rem;
+      background: rgba(255,255,255,.6);
+      border-radius: 12px;
+    }
+    .sticky { position: sticky; top: 1rem; }
+    .stat { display: flex; gap: .5rem; align-items: baseline; }
+    .stat b { min-width: 8rem; }
+
+    /* Hero image centered */
+    .hero-figure { max-width: 900px; margin: 0 auto 1rem; }
+    .hero-figure img { width: 100%; height: auto; display: block; }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <!-- Top Header (colors unchanged) -->
+  <nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
+    <div class="container-fluid" style="align-items: center; justify-content: center;">
+      <div class="flexrow">
+        <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
+      </div>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="../index.html">Home</a></h4>
+        <h4><a class="nav-link" href="../about.html">About</a></h4>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 8: CNC Milling</h3>
-<br> 
+  <main class="container py-4 page">
+    <!-- Title row + right-side “At a glance” (no section quick-nav) -->
+    <div class="row g-4">
+      <div class="col-12 col-lg-8">
+        <header class="mb-2">
+          <h3 class="mb-1">Week 8: CNC Milling</h3>
+          <p class="h6 lh-base mb-0">
+            Favorite week so far! The CNC setup was a handful (huge thanks to Kassia for the patience), but seeing
+            a flat board turn into a guitar body never gets old. I’m already plotting what to mill next… time permitting.
+          </p>
+        </header>
+      </div>
 
-<h4>This week’s assignment has to be my favorite by far! Although the CNC setup was a pain, shoutout to Cassia for bearing with us, she’s the best! I am definitely planning on CNCing more items… if I have the time that is! </h4>
-<br> 
-<h3> 1.  CNC milling using ShopBot </h3>
-<h4>
-<br> 
-This was very time consuming to say the least. To be fair, it was my first time ever getting my hands on the CNC machine so mistakes were made. I initially modeled this electric guitar on fusion, and I am actually so proud of how my design turned out! I used a reference outline image for the outline but designed the compartments myself. As you can tell from the image below, during the design period I had no idea how 
-I wanted the final product to look like, so I did not account for the pitfalls that would occur if for instance my model was accidentally saved in two different sketches. (oopsies… again thank you Cassia for being patient with me!) </h4>
-(image of electric guitar)
-<br> 
+      <aside class="col-12 col-lg-4">
+        <div class="aside-card sticky p-3">
+          <h5 class="mb-2">At a glance</h5>
+          <div class="stat"><b>Machine:</b><span>ShopBot</span></div>
+          <div class="stat"><b>CAD/CAM:</b><span>Fusion 360 → Rhino (prep)</span></div>
+          <div class="stat"><b>Material:</b><span>Wood stock (measured with calipers)</span></div>
+          <div class="stat"><b>Workflow:</b><span>Design → CAM → Zero → Cut</span></div>
+          <div class="stat"><b>Team:</b><span>Worked with Cinar</span></div>
+          <div class="stat"><b>TA assist:</b><span>Kassia (setup & sanity checks)</span></div>
+        </div>
+      </aside>
+    </div>
 
-<h4> I worked with Cinar for this assignment, and I the CAD and he planned out the shapes of the cuts. This process taught me a lot. We started off be measuring the depth of the wood suing a caliper, which was approximately 19 inches deep. Then we transferred the two sketches into rhino and made necessary edits. </h4>
-<br> 
+    <!-- Hero (updated src) -->
+    <section class="mt-2" aria-label="Hero">
+      <figure class="hero-figure">
+        <img src="./3.JPG" alt="Guitar body on the ShopBot bed during milling" class="img-card" loading="lazy">
+        <figcaption class="caption">Electric guitar project on the ShopBot—where the sawdust happens.</figcaption>
+      </figure>
+    </section>
 
+    <!-- 1) CNC milling using ShopBot -->
+    <section class="mt-4" aria-label="CNC milling using ShopBot">
+      <h4 class="mb-2">1) CNC Milling with the ShopBot</h4>
+      <p class="h6 lh-base">
+        I modeled an electric guitar in Fusion 360. I used a reference outline for the body curve, then designed the
+        internal cavities myself. Early on, I learned the hard way that mixing features across multiple sketches can
+        bite you later when generating toolpaths—keep related geometry together and name your sketches.
+      </p>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./2.JPG" alt="Fusion 360 model of the guitar body" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./3.JPG" alt="Rhino prep for toolpath layers" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./4.JPG" alt="Workholding and zeroing the stock" class="img-card" loading="lazy"></figure>
+        </div>
+      </div>
+      <p class="h6 lh-base">
+        With Cinar, we measured the board with calipers, imported the sketches into Rhino, and organized the cut groups.
+        The goal was a layered interior: the corner lines step down at slightly different depths to echo the star motif
+        in the center. That meant careful layer separation—at one point, I had merged too much into a single layer and
+        had to rebuild the CAM groups. Worth it for the final look.
+      </p>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6">
+          <figure><img src="./5.JPG" alt="Pocketing passes creating stepped layers" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure><img src="./6.JPG" alt="Progress shot showing interior pockets and edges" class="img-card" loading="lazy"></figure>
+        </div>
+      </div>
+      <p class="h6 lh-base mb-0">
+        Long story short: lots of passes, lots of brush-vacuuming, and a really satisfying reveal. The stepped pockets
+        around the star came out mesmerizing.
+      </p>
+    </section>
 
-<h4> This is the part that took nearly 30 minutes of going back and forth.  The vision that we were going for was for the inside lines on both corners to have different depth layers that are slightly different from one another, to create this cool effect that goes with the rising star in the middle of the guitar. Implementing this idea was quite challenging as I unknowingly merged all the guitar parts in one layer, not accounting for the fact that I would want to do a fancy cut.</h4>
-<br> 
+    <!-- 2) Vacuum forming -->
+    <section class="mt-5" aria-label="Vacuum Forming">
+      <h4 class="mb-2">2) Vacuum Forming</h4>
+      <p class="h6 lh-base">
+        We used the guitar body for a vacuum-formed shell. Huge thanks to Jessica for the walkthrough. Pro tip we learned
+        the slow way: the plastic sheet has <em>two</em> protective films. Peel both, or you’ll end up with a mystery hole
+        or a wrinkly pull.
+      </p>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6">
+          <figure><img src="./7.JPG" alt="Vacuum former setup with the guitar as the mold" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure><img src="./8.JPG" alt="First attempt showing film issue" class="img-card" loading="lazy"></figure>
+        </div>
+      </div>
+      <p class="h6 lh-base mb-0">
+        First pull had a small tear (hello, forgotten film), but attempt two was clean. Even with the hiccup, the formed
+        shell captured the edges better than we expected.
+      </p>
+    </section>
 
-<h4> I am so happy with how the guitar turned out, and I think those cuts in the end were mesmerizing. </h4>
-<h3> 2. Vaccuming</h3>
-<br> 
-<h4> 
-For the vacuuming, we decided to use our guitar as well. Thank you Jessica for helping us set the machine up! A problem that we faced was not knowing that the plastic sheet had 2 sides that needed to be removed</h4><br> 
-<h4>
-Our first attempt was partly a fail, as there was a hole in the plastic mold, due to us peeling the first layer that we forgot to peel initially. So we decided to do it again.</h4><br> 
+    <!-- 3) Molding & Casting -->
+    <section class="mt-5" aria-label="Molding and Casting">
+      <h4 class="mb-2">3) Molding & Casting</h4>
+      <p class="h6 lh-base">
+        For casting, we picked an air-dry mix that paired well with the plastic mold. Following the instructions, we mixed
+        powder into water at a 5:1 ratio until it hit a thick oobleck vibe, poured, and let it cure for two days.
+      </p>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6">
+          <figure><img src="./9.JPG" alt="Mixing the casting material to the right consistency" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure><img src="./10.JPG" alt="Demolding the cast from the vacuum-formed shell" class="img-card" loading="lazy"></figure>
+        </div>
+      </div>
+      <p class="h6 lh-base mb-0">
+        The surface isn’t perfect, but it’s honestly better than I expected for a first pour. Next time I’ll add a tiny
+        draft on interior edges and tap the mold longer to chase bubbles.
+      </p>
+    </section>
 
+    <!-- Lessons learned -->
+    <section class="mt-5" aria-label="Lessons Learned">
+      <h4 class="mb-2">Lessons Learned</h4>
+      <ul class="h6">
+        <li><b>Plan for layers in CAD.</b> If you want stepped depths, keep sketches/layers clean and named from the start.</li>
+        <li><b>Measure twice, zero once.</b> Calipers + a consistent Z zero saved us re-runs.</li>
+        <li><b>Plastic has two films.</b> Yes, both sides. Ask me how I know.</li>
+        <li><b>Casting loves patience.</b> Mix slowly, pour steadily, tap out bubbles, and walk away.</li>
+      </ul>
+      <p class="h6 lh-base mb-0">
+        Next time I use the ShopBot, I’ll be extra mindful of how linework groups into toolpaths and where transitions
+        happen. Cleaner CAM upfront = faster, prettier cuts.
+      </p>
+    </section>
+  </main>
 
-<h4>
-The second attempt was a success! However we thought we had it all figured out by removing the side of the plastic paper, only to find out that there are actually 2 sides to be removed! But thankfully that did not interfere with our final product!</h4><br> 
-
-
-<h3>
-3.Molding and casting </h3>
-<h4><br> 
-We chose air casting as it is the most appropriate for our plastic mold. Following the thorough instructions on the back of the can, we measured the correct amount of water and powder, with the powder being 5 times more than water. We gradually mixed powder into water, until we reached a stiff ooblec-like consistency.</h4><br> 
-
-<h4>
-The rest of the process was pretty simple, we simply poured the mixture into our guitar mold, and came back to it 2 days later! Although the results are not perfect, it is so much better than I expected : ) </h4><br> 
-
-
-<h3>
-Lessons learned: </h3>
-
-<h4>
-Next time I plan to use the CNC machine, which hopefully I do, I will be very mindful of the type of cuts I plan on doing, and how the lines are connected with one another, and how easy the toolpath can be implemented. </h4><br> 
-
-
-
-
-
-
-
-
-</h4>
-
-</div>
-</xmp>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>

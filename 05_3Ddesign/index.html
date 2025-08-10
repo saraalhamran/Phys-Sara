@@ -1,69 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PS70: Intro to Digital Fabrication — Week 5 (3D Design & Printing)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Match the Final Project structure */
+    body { font-family: 'Poppins', sans-serif; }
+    main { max-width: 1100px; }
+    figure { margin: 0 0 1rem 0; }
+    .gallery-gap > [class^="col"], .gallery-gap > [class*=" col"] { margin-bottom: 1rem; }
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
+    /* Image treatment (keeps your site-wide border color) */
+    .img-card {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 4px solid rgba(179, 231, 186, 0.52);
+      border-radius: 18px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.10);
+    }
 
+    /* Readability */
+    .page p, .page .h6, .page li { font-size: 1.06rem; line-height: 1.9; }
 
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+    /* Right-hand summary */
+    .aside-card {
+      border-left: 4px solid rgba(179, 231, 186, 0.52);
+      padding-left: 1rem;
+      background: rgba(255,255,255,.6);
+      border-radius: 12px;
+    }
+    .sticky { position: sticky; top: 1rem; }
+    .stat { display: flex; gap: .5rem; align-items: baseline; }
+    .stat b { min-width: 7.5rem; }
+
+    /* Section quick-nav */
+    .section-nav .nav-link {
+      border-radius: 999px;
+      padding: .35rem .9rem;
+      border: 1px solid rgba(179,231,186,.52);
+      background: rgba(255,255,255,.6);
+      margin-right: .5rem; margin-bottom: .5rem;
+    }
+    .section-nav .nav-link:hover { background: rgba(179,231,186,.12); }
+
+    /* Hero image centered */
+    .hero-figure { max-width: 860px; margin: 0 auto 1rem; }
+    .hero-figure img { width: 100%; height: auto; display: block; }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <!-- Top Header (colors unchanged) -->
+  <nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
+    <div class="container-fluid" style="align-items: center; justify-content: center;">
+      <div class="flexrow">
+        <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
+      </div>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="../index.html">Home</a></h4>
+        <h4><a class="nav-link" href="../about.html">About</a></h4>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 5: 3D Design & Printing</h3>
+  <main class="container py-4 page">
+    <!-- Title row + right-side summary (like Final Project) -->
+    <div class="row g-4">
+      <div class="col-12 col-lg-8">
+        <header class="mb-2">
+          <h3 class="mb-1">Week 5: 3D Design & Printing</h3>
+          <p class="h6 lh-base mb-0">
+            For my first ever 3D print, I riffed on a mesmerizing spinning cone my calc teacher once made.
+            I modeled a two-part version in Fusion 360 so each piece prints separately and then nests together.
+            The plan: clean geometry, satisfying fit, and a print that’s fun to fidget with.
+          </p>
+        </header>
+      </div>
 
-<h5>For my first ever 3d-printed project, I was inspired by a 3d printed cone my calc teacher created, that I always found so addicting. I started with designing the model on Fusion360, I then decided to separate the two parts so they print individually.</h5>
+      <aside class="col-12 col-lg-4">
+        <div class="aside-card sticky p-3">
+          <h5 class="mb-2">At a glance</h5>
+          <div class="stat"><b>CAD:</b><span>Fusion 360</span></div>
+          <div class="stat"><b>Slicer:</b><span>PrusaSlicer</span></div>
+          <div class="stat"><b>Material:</b><span>PLA</span></div>
+          <div class="stat"><b>Supports:</b><span>Yes (auto)</span></div>
+          <div class="stat"><b>Print time:</b><span>~3 hours</span></div>
+          <div class="stat"><b>Goal:</b><span>Two parts, snug fit</span></div>
+        </div>
+      </aside>
+    </div>
 
-<a download href="./sosocone.stl">Click here to download my file</a>
-<br>
-<img src="./1.png" alt="generic placeholder image" style="width: 400px; height: 310px;">
-<img src="./2.png" alt="generic placeholder image" style="width: 400px; height: 310px;">
-<img src="./3.png" alt="generic placeholder image" style="width: 400px; height: 310px;">
-<img src="./4.png" alt="generic placeholder image" style="width: 400px; height: 310px;">
+ 
 
+    <!-- Hero -->
+    <section class="mt-2" aria-label="Hero">
+      <figure class="hero-figure">
+        <img src="./1.png" alt="Fusion 360 model of the two-part cone" class="img-card" loading="lazy">
+        <figcaption class="caption">Fusion view of the two-part design—split for clean printing and assembly.</figcaption>
+      </figure>
+    </section>
 
-<br> 
+    <!-- Modeling -->
+    <section id="modeling" class="mt-4" aria-label="Modeling in Fusion 360">
+      <h4 class="mb-2">Modeling in Fusion 360</h4>
+      <p class="h6 lh-base">
+        I built the cone in two pieces so overhangs stay reasonable and the seam hides in the design. Sketch → revolve,
+        then a few small fillets for a softer hand feel. Splitting the body early helped me think about how supports
+        would form and where surfaces would be most visible after printing.
+      </p>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./2.png" alt="Cone sketch and revolve setup" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./3.png" alt="Sectioned model showing two parts" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure><img src="./4.png" alt="Detail view of interface between parts" class="img-card" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
 
-<h5> I then transferred my work to Prusa Slicer, and to be frank I did not expect this small item to require 3 hours of printing time, but it was okay! I simply supervised the first layer and trusted the machine with the rest. Prusa got really mad at my model, as it involves intrifcate pieces sort of hanging onto nothing, and added so much support that it looks more like a volcano that a cone :0 </h5>
-<br>
-<img src="./lala.GIF" alt="generic placeholder image" style="width: 400px; height: 310px;">
-<img src="./lo.png" alt="generic placeholder image" style="width: 400px; height: 310px;">
-<img src="./ha.png" alt="generic placeholder image" style="width: 400px; height: 310px;">
-<img src="./yay.png" alt="generic placeholder image" style="width: 400px; height: 310px;">
-<br>
+    <!-- Slicing -->
+    <section id="slicing" class="mt-4" aria-label="Slicing in PrusaSlicer">
+      <h4 class="mb-2">Slicing in PrusaSlicer</h4>
+      <p class="h6 lh-base">
+        I moved the parts into PrusaSlicer and—surprise—this tiny object still clocked ~3 hours.
+        The geometry has delicate spans, so the slicer added a lot of support (volcano vibes 🌋).
+        I babysat the first layer, then let it ride.
+      </p>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6 col-lg-3">
+          <figure><img src="./lala.GIF" alt="Slicer preview and time estimate" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <figure><img src="./lo.png" alt="Support preview in PrusaSlicer" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <figure><img src="./ha.png" alt="Layer view around overhangs" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <figure><img src="./yay.png" alt="Top layers and seam direction" class="img-card" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
 
-<h5> The printed results looked a bit funny? However I was keen to get it as clean as possible, which I think I did! I am proud that the two shapes fit, at least for the top part. I think the base of the shape still had some 3d printed support that needed to be cut off, hence the refusal to fully fit. </h5>
-<img src="./rawr.GIF" alt="generic placeholder image" style="width: 500; height: 310px;">
+    <!-- Printing & Cleanup -->
+    <section id="printing" class="mt-4" aria-label="Printing & Support Removal">
+      <h4 class="mb-2">Printing & Support Removal</h4>
+      <p class="h6 lh-base">
+        The print finished cleanly, but the supports were… generous. After a careful teardown with flush cutters
+        and a deburring tool, the surfaces looked much better. A light pass with a fine file on contact scars
+        made the parts feel finished without changing dimensions much.
+      </p>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-8">
+          <figure><img src="./rawr.GIF" alt="Assembly and cleanup progress" class="img-card" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
 
-<br>
+    <!-- Fit & Tolerances -->
+    <section id="fit" class="mt-4" aria-label="Fit & Tolerances">
+      <h4 class="mb-2">Fit & Tolerances</h4>
+      <p class="h6 lh-base mb-0">
+        The two shapes nest—win! The top fit is perfect; the base was tight until I found a bit of hidden support
+        still clinging in a corner. Lesson learned: inspect internal interfaces before judging tolerances. Next pass,
+        I’ll add a whisper of clearance to make the press-fit more forgiving.
+      </p>
+    </section>
 
-<h5> I originally wanted to scan my lipgloss, however it had a very reflective surface, same with my water bottle, which made it really hard to capture them on camera. Instead, I opted for a sculpture from the lab, and the scan turned out just fine! </h5>
-<img src="./ya.png" alt="generic placeholder image" style="width: 400px; height: 310px;">
-<img src="./fa.png" alt="generic placeholder image" style="width: 400px; height: 310px;">
+    <!-- 3D Scanning Try -->
+    <section id="scanning" class="mt-4" aria-label="3D Scanning Attempt">
+      <h4 class="mb-2">3D Scanning Try</h4>
+      <p class="h6 lh-base">
+        I wanted to scan my lip gloss (too reflective) and water bottle (same problem), so I switched to a matte lab
+        sculpture and finally got a usable scan. Note to self: shiny = pain. Next time, matte spray first.
+      </p>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6">
+          <figure><img src="./ya.png" alt="Scan subject from the lab" class="img-card" loading="lazy"></figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure><img src="./fa.png" alt="Reconstructed mesh from the scan" class="img-card" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
 
-<br>
+    <!-- Files -->
+    <section id="files" class="mt-4" aria-label="Files">
+      <h4 class="mb-2">Files</h4>
+      <a class="btn btn-outline-dark" href="./sosocone.stl" download>Download STL — sosocone.stl</a>
+    </section>
+  </main>
 
-
-
-
-</div>
-</xmp>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>

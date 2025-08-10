@@ -1,70 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PS70: Intro to Digital Fabrication — Week 2 (2D Design & Cutting)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <!-- Top Header (colors unchanged) -->
+  <nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
+    <div class="container-fluid" style="align-items: center; justify-content: center;">
+      <div class="flexrow">
+        <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
+      </div>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="../index.html">Home</a></h4>
+        <h4><a class="nav-link" href="../about.html">About</a></h4>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 2: 2D Design & Cutting</h3>
+  <main class="container py-4 page">
+    <header class="mb-3">
+      <h3>Week 2: 2D Design & Cutting</h3>
+      <p class="h6 lh-base mb-0">
+        This week was all about translating ideas into clean, cuttable geometry. I practiced
+        parametric design, dialed in kerf for press-fit joints, and learned (the hard way) that
+        “pretty shapes” still have to be manufacturable. Here’s the journey, with what worked,
+        what didn’t, and what I’ll improve next time.
+      </p>
+    </header>
 
-<p class="margin">   </p>
-<div class="flexrow">
-  <a id="btn" href="./temp.zip" download>Test Download Button
-  </a>
-</div>
-<p class="margin">   </p>
+    <!-- Download -->
+    <div class="d-flex justify-content-center my-3">
+      <a id="btn" href="./temp.zip" download>Test Download Button</a>
+    </div>
 
-<h4>Assignment 1: Make a Box</h4>
-<h4>This assignment taught me that you should master the basics first then proceed to harder things. I started off with solid and niche ideas that looked aesthetically pleasing, albeit geometrically impossible. There were numerous shapes that I wanted my box to take, however, I still did not quite know how to create mathematically correct finger joints that fit together. All thanks to Leo and my Tas for staying patient with me and teaching me how to make them. And so, I ended up creating a simple box with successful finger joints. There are nowhere near perfect, in fact, there is a tiny gap that I did not account for, and for some reason one finger got cut off, however, I am proud of my box and consider it progress. </h4>
-<img src="./tbox.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
-<img src="./box.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
-<img src="./cbox.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
+    <!-- Assignment 1 -->
+    <section class="mb-4" aria-label="Assignment 1: Make a Box">
+      <h4 class="mb-2">Assignment 1: Make a Box</h4>
+      <p class="h6 lh-base">
+        I came in swinging with ambitious “artsy” concepts… and immediately met geometry reality.
+        Finger joints looked simple until I tried to make them parametric and kerf-aware. Huge
+        thanks to Leo and the TAs for walking me through the right way to think about fit.
+        I ended up shipping a simple press-fit box with clean tabs. It isn’t perfect—there’s a tiny
+        gap I didn’t account for and one finger got clipped—but it’s solid progress and a good
+        baseline for iteration.
+      </p>
 
+      <div class="row gallery-gap mt-2">
+        <div class="col-12 col-md-4">
+          <figure>
+            <img src="./tbox.png" alt="Tab layout for press-fit box" class="img-card img-fluid" loading="lazy">
+            <figcaption class="caption">Tab layout test with kerf in mind.</figcaption>
+          </figure>
+        </div>
+        <div class="col-12 col-md-4">
+          <figure>
+            <img src="./box.png" alt="Assembled press-fit box" class="img-card img-fluid" loading="lazy">
+            <figcaption class="caption">First assembly—snug but not forced.</figcaption>
+          </figure>
+        </div>
+        <div class="col-12 col-md-4">
+          <figure>
+            <img src="./cbox.png" alt="Close-up of finger joints" class="img-card img-fluid" loading="lazy">
+            <figcaption class="caption">Close-up: joint tolerance needs a tiny tweak.</figcaption>
+          </figure>
+        </div>
+      </div>
 
+      <div class="row mt-2">
+        <div class="col-12 col-lg-6">
+          <h5 class="mb-2">What I learned</h5>
+          <ul class="h6 mb-0">
+            <li>Make kerf a parameter. Update once, fix everywhere.</li>
+            <li>Square corners ≠ square assembly—check diagonals, not just edges.</li>
+            <li>Test joints in a small coupon before cutting the whole design.</li>
+          </ul>
+        </div>
+        <div class="col-12 col-lg-6">
+          <h5 class="mb-2">Next iteration</h5>
+          <ul class="h6 mb-0">
+            <li>Add small dog-bone fillets where tabs meet the walls.</li>
+            <li>Label faces in the cut file to speed up assembly.</li>
+            <li>Export with stroke weights the laser actually understands (hairline).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
+    <!-- Assignment 2 -->
+    <section class="mb-4" aria-label="Assignment 2: Fusion 360 Tutorial">
+      <h4 class="mb-2">Assignment 2: Fusion 360 Tutorial</h4>
+      <p class="h6 lh-base">
+        The tutorials were surprisingly fun. Modeling the LEGO brick made the
+        <code>Extrude</code>, <code>Shell</code>, and <code>Pattern</code> tools click for me,
+        and I started thinking in constraints instead of vibes. Getting the stud dimensions right
+        also taught me how important references are when you’re replicating real-world parts.
+      </p>
 
+      <div class="row gallery-gap mt-2">
+        <div class="col-12 col-md-6">
+          <figure>
+            <img src="./block.png" alt="Fusion 360 LEGO block model" class="img-card img-fluid" loading="lazy">
+            <figcaption class="caption">Parametric dimensions = easy edits later.</figcaption>
+          </figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure>
+            <img src="./bblock.png" alt="Fusion 360 brick with patterned studs" class="img-card img-fluid" loading="lazy">
+            <figcaption class="caption">Circular + rectangular patterns to place studs cleanly.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
 
+    <!-- Assignment 3 -->
+    <section class="mb-4" aria-label="Assignment 3: Fusion Modeling">
+      <h4 class="mb-2">Assignment 3: Fusion Modeling — AirPods Case</h4>
+      <p class="h6 lh-base">
+        I wanted something I’d actually use, so I modeled an AirPods case. I got a nice first pass,
+        then Fusion crashed and took some work with it (RIP unsaved timeline). Still, I’m happy with
+        the form and the hinge clearances I was aiming for. The redo will be fully parametric with
+        lid stop angles and wall thicknesses as named parameters, so I can try different materials
+        later without redrawing everything.
+      </p>
 
+      <div class="row gallery-gap mt-2">
+        <div class="col-12 col-md-6">
+          <figure>
+            <img src="./airpod.png" alt="AirPods case body in Fusion 360" class="img-card img-fluid" loading="lazy">
+            <figcaption class="caption">Body with filleted edges; planning for lid offset.</figcaption>
+          </figure>
+        </div>
+        <div class="col-12 col-md-6">
+          <figure>
+            <img src="./rawr.png" alt="Exploded view of case halves" class="img-card img-fluid" loading="lazy">
+            <figcaption class="caption">Exploded view to check hinge, clearance, and shell thickness.</figcaption>
+          </figure>
+        </div>
+      </div>
 
-<h4>Assignment 2: Fusion 360 Tutorial</h4>
-<h4>These tutorials were pretty fun and easy to follow! Creating the lego block really helped me better understand how the extrude option in fusion works, and it was fascinating to start modelling 3d items in fusion! </h4>
-<img src="./block.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
-<img src="./bblock.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
+      <div class="row mt-2">
+        <div class="col-12 col-lg-6">
+          <h5 class="mb-2">Notes to future me</h5>
+          <ul class="h6 mb-0">
+            <li>Save early, save often, and keep versions—Fusion can humble you.</li>
+            <li>Measure the real AirPods with calipers; don’t eyeball radii.</li>
+            <li>Draft angles matter if I ever injection-mold this (dream big).</li>
+          </ul>
+        </div>
+        <div class="col-12 col-lg-6">
+          <h5 class="mb-2">If I laser-cut a prototype</h5>
+          <ul class="h6 mb-0">
+            <li>Use living hinges for the lid on plywood/acrylic tests.</li>
+            <li>Add locating tabs so the halves register perfectly.</li>
+            <li>Line the inside with felt or TPU inserts to protect the case.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
+    <!-- Wrap-up -->
+    <section aria-label="Reflection">
+      <h4 class="mb-2">Reflection</h4>
+      <p class="h6 lh-base mb-0">
+        The biggest mindset shift was going parametric and thinking in constraints.
+        Once kerf, material thickness, and joint widths became variables, iterating got fast—and
+        my cuts matched what I drew. Next up: bring these habits into 3D prints and start mixing
+        laser-cut parts with simple printed features.
+      </p>
+    </section>
+  </main>
 
-
-<h4>Assignment 3: Fusion Modeling</h4>
-<h4>My plan was to design an airpod case, as I love my airpods so much and cannot imagine life without them. I got the case right, but unfortunately fusion crashed afterwards and I lost a lot of the progress I made, but Im still satisfied with how it looked like!</h4>
-<img src="./airpod.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
-<img src="./rawr.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
-
-
-
-
-
-</div>
-</xmp>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>

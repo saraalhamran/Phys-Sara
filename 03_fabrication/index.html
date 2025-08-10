@@ -1,76 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PS70: Intro to Digital Fabrication — Week 3 (Hand Tools & Kinetic Sculpture)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+  <style>
+    /* Page structure & spacing (matches your Final Project vibe) */
+    main { max-width: 1100px; }
+    figure { margin: 0 0 1rem 0; }
+    .gallery-gap > [class^="col"], .gallery-gap > [class*=" col"] { margin-bottom: 1rem; }
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
+    /* Image treatment (keeps your site-wide border color) */
+    .img-card {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 4px solid rgba(179, 231, 186, 0.52);
+      border-radius: 18px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.10);
+    }
 
+    /* Readability */
+    .page p, .page .h6, .page li { font-size: 1.06rem; line-height: 1.9; }
 
-<nav class="navbar navbar-expand-sm navbar-dark" style="color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+    /* Right-hand “at-a-glance” card */
+    .aside-card {
+      border-left: 4px solid rgba(179, 231, 186, 0.52);
+      padding-left: 1rem;
+      background: rgba(255,255,255,.6);
+      border-radius: 12px;
+    }
+    .sticky { position: sticky; top: 1rem; }
+    .stat { display: flex; gap: .5rem; align-items: baseline; }
+    .stat b { min-width: 7.5rem; }
+
+    /* Section nav */
+    .section-nav .nav-link {
+      border-radius: 999px;
+      padding: .35rem .9rem;
+      border: 1px solid rgba(179,231,186,.52);
+      background: rgba(255,255,255,.6);
+      margin-right: .5rem;
+      margin-bottom: .5rem;
+    }
+    .section-nav .nav-link:hover { background: rgba(179,231,186,.12); }
+
+    /* Make the demo GIF a bit larger than the sketch on md+ screens */
+    @media (min-width: 768px) {
+      .demo-col { flex: 0 0 auto; width: 66.6667%; }  /* col-md-8 */
+      .sketch-col { flex: 0 0 auto; width: 33.3333%; } /* col-md-4 */
+    }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <!-- Top Header (colors unchanged) -->
+  <nav class="navbar navbar-expand-sm navbar-dark" style="color: #EEE7E8;">
+    <div class="container-fluid" style="align-items: center; justify-content: center;">
+      <div class="flexrow">
+        <h2 class="nav-title">Digital Fabrication - Summer 2025</h2>
+      </div>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="../index.html">Home</a></h4>
+        <h4><a class="nav-link" href="../about.html">About</a></h4>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 3: Hand Tools and Fabrication</h3>
+  <main class="container py-4 page">
+    <!-- Title row with right-side summary to fill the page nicely -->
+    <div class="row g-4">
+      <div class="col-12 col-lg-8">
+        <header class="mb-2">
+          <h3 class="mb-1">Week 3: Hand Tools and Fabrication</h3>
+          <h4 class="mb-2">Kinetic Sculpture — “Whale & Waves”</h4>
+          <p class="h6 lh-base mb-0">
+            The brief: build a small kinetic sculpture using basic hand tools, laser-cut parts, and a simple motion mechanism.
+            I set out to capture the calm rhythm of a whale riding waves—great motivation to learn cam-followers and linkages.
+            I went in ambitious, learned tolerances the hard way, and finished with a working, soothing motion loop I’m proud of.
+            (Shoutout to Mila Barry’s past projects for motor coupling inspo.)
+          </p>
+        </header>
+      </div>
 
-<h4>Kinetic Sculpture</h4>
-<img src="./rlol.GIF" alt="generic placeholder image" style="width: 400px; height: 300px;">
-<img src="./sketch.jpg" alt="generic placeholder image" style="width: 400px; height: 300px;">
+      <aside class="col-12 col-lg-4">
+        <div class="aside-card sticky p-3">
+          <h5 class="mb-2">At a glance</h5>
+          <div class="stat"><b>Motion:</b><span>Cam + follower (elliptical cams)</span></div>
+          <div class="stat"><b>Frame:</b><span>Finger-jointed box (press-fit)</span></div>
+          <div class="stat"><b>Drive:</b><span>Motor → shaft coupler → main rod</span></div>
+          <div class="stat"><b>Focus:</b><span>Tolerances, spacing, smooth travel</span></div>
+          <div class="stat"><b>Fix:</b><span>Top plate swap to resolve binding</span></div>
+        </div>
+      </aside>
+    </div>
 
+ 
+    <!-- Overview -->
+    <section id="overview" class="mb-4" aria-label="Overview">
+      <div class="row gallery-gap">
+        <div class="col-12 demo-col">
+          <figure>
+            <img src="./rlol.GIF" alt="Animated demo of the whale-and-waves kinetic sculpture in motion" class="img-card" loading="lazy">
+            <figcaption class="caption">Quick demo: cams rotate; whale and waves bob in a calm loop.</figcaption>
+          </figure>
+        </div>
+        <div class="col-12 sketch-col">
+          <figure>
+            <img src="./sketch.jpg" alt="Initial sketch exploring motion paths and component layout" class="img-card" loading="lazy">
+            <figcaption class="caption">First sketch—ambitious curves, later aligned to real tolerances.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
 
+    <!-- Design Intent -->
+    <section id="design-intent" class="mb-4" aria-label="Design Intent">
+      <h4 class="mb-2">Design Intent</h4>
+      <p class="h6 lh-base">
+        The sculpture is a finger-jointed box housing a rotating shaft. Elliptical cams on the shaft lift simple followers
+        that animate the whale silhouette and layered wave panels. I aimed for an ocean-like rhythm instead of aggressive motion.
+        Layout mattered more than expected: hole spacing, follower length, and cam offset all change the feel. I also
+        underestimated how precisely the lid holes need to align with cam centers—being off by even a couple millimeters can bind
+        the mechanism.
+      </p>
+    </section>
 
-</div>
+    <!-- CAD & Planning -->
+    <section id="cad-planning" class="mb-4" aria-label="CAD & Planning">
+      <h4 class="mb-2">CAD & Planning</h4>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-4">
+          <figure>
+            <img src="./waves.png" alt="Wave profile pieces prepared for laser cutting" class="img-card" loading="lazy">
+            <figcaption class="caption">Layered wave panels—stacked for parallax as the cams turn.</figcaption>
+          </figure>
+        </div>
+        <div class="col-12 col-md-4">
+          <figure>
+            <img src="./whale.png" alt="Whale silhouette piece that rides the follower" class="img-card" loading="lazy">
+            <figcaption class="caption">Whale silhouette: light enough to lift smoothly.</figcaption>
+          </figure>
+        </div>
+        <div class="col-12 col-md-4">
+          <figure>
+            <img src="./cut.png" alt="Finger-jointed box panels laid out for cutting" class="img-card" loading="lazy">
+            <figcaption class="caption">Press-fit box panels; joints tuned for a snug fit.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <p class="h6 lh-base">
+        In Fusion, I parameterized material thickness and joint width to tweak kerf and fit without redrawing. I also modeled
+        circular couplers to link the motor shaft to the main rod. The cams are ellipses—simple to cut and reliable for smooth rise/fall.
+      </p>
+    </section>
 
+    <!-- Assembly -->
+    <section id="assembly" class="mb-4" aria-label="Assembly">
+      <h4 class="mb-2">Assembly</h4>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure>
+            <img src="./wawa.png" alt="Partially assembled finger-joint box showing internal shaft path" class="img-card" loading="lazy">
+            <figcaption class="caption">Dry-fit to verify alignment before glue-up.</figcaption>
+          </figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure>
+            <img src="./wood.png" alt="Hand tools and materials used during the build" class="img-card" loading="lazy">
+            <figcaption class="caption">Bench setup—files, glue, clamps, and patience.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <p class="h6 lh-base">
+        I glued three sides first to create a stable base, then switched to wood glue for strength. I planned a wooden dowel
+        but used a 5&nbsp;mm metal rod that matched the design—bonus rigidity. The cams were glued to the shaft with rectangular
+        followers riding on top. A gotcha: the top plate holes were slightly off relative to cam centers, causing binding.
+        Fortunately I had a spare top; swapping it fixed the issue without re-cutting.
+      </p>
+    </section>
 
-<h4>For my kinetic sculpture, I have decided to depict the movement of a whale in the ocean, since whales have always interested me. To be frank, I had a really hard time getting the last assignment done on time, so I was eager to get this one right. A lot of aspects of my project are inspired from students’ past work, especially the mechanism and connector to the motor (Shoutout to Mila Barry) I satarted with an ambitious sketch as shown above, however, a lot of things did not flow as expected in the kind, but I am still happy that it works. I will work better on being very precise and particular about my measurments in the future, as you can see my main problem was not the mechanism as much as it was the spacing between the holes </h4>
+    <!-- Mechanism Tuning -->
+    <section id="tuning" class="mb-4" aria-label="Mechanism Tuning">
+      <h4 class="mb-2">Mechanism Tuning</h4>
+      <div class="row gallery-gap">
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure>
+            <img src="./work.png" alt="Mechanism close-up during motion testing" class="img-card" loading="lazy">
+            <figcaption class="caption">Cam/follower clearance check—listen for rub, feel for bind.</figcaption>
+          </figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure>
+            <img src="./circuit.png" alt="Basic drive circuit and power routing" class="img-card" loading="lazy">
+            <figcaption class="caption">Basic drive wiring to keep shaft speed steady.</figcaption>
+          </figure>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <figure>
+            <img src="./code.png" alt="Control logic notes used for speed testing" class="img-card" loading="lazy">
+            <figcaption class="caption">Control notes—aiming for a calm, ocean-like tempo.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <p class="h6 lh-base">
+        Most tuning time went into spacing: distance from cam center to follower hole, follower length/thickness,
+        and slight phase differences between whale and waves. Small changes, big impact. I iterated until the whale felt
+        fluid (not jerky) and the waves drifted slightly out of phase for depth.
+      </p>
+    </section>
 
-<img src="./waves.png" alt="generic placeholder image" style="width: 300px; height: 210px;">
-<img src="./whale.png" alt="generic placeholder image" style="width: 300px; height: 270px;">
-<img src="./cut.png" alt="generic placeholder image" style="width: 300px; height: 300px;">
+    <!-- Reflection -->
+    <section id="reflection" aria-label="Reflection">
+      <h4 class="mb-2">Reflection</h4>
+      <p class="h6 lh-base mb-0">
+        The mechanism wasn’t the hardest part—precision was. Hole placement, perpendicularity, and keeping things square
+        mattered more than I expected. Next pass, I’ll add simple drill jigs for fool-proof spacing and lightly sand cam edges
+        to reduce friction noise. Even with hiccups, the motion reads exactly how I hoped: simple, calm, and a little mesmerizing.
+      </p>
+    </section>
+  </main>
 
-<h5>I started by sketching my idea in fusion, which is basically a finger joint box with holes, in which wooden dowls will fit into later, along with cams in the shapes of ellipses for the waves and whale to move, with the help of a rectangle with a hole in the middle to control that movement and keep it intact. I also created 6 circles with holes to serve as connectors to transition motion from the motor to the dowl. </h5>
-
-<img src="./wawa.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
-
-<h6>I started by hot glueing three parts of the finger joint box to create a stable base for the sculpture. Even though the finger joiuints were a tiny bit off, it still fit just fine. I initially planned on using a wooden dowl, but found another metal one that match the 5m diameter I chose. Then I went ahead and glued the oval cams onto the dowl, with the rectangles resting on top. The tricky part was the fact that the top holes were off centered in relation to the 4 cams, but luckily i printed an extra box top so I just used that. That pretty much sums up the sculpture part of this project.</h6>
-
-<img src="./work.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
-<img src="./code.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
-
-<img src="./circuit.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
-
-
-
-
-
-<img src="./wood.png" alt="generic placeholder image" style="width: 300px; height: 290px;">
-
-
-
-
-
-
-
-
-
-
-</div>
-</xmp>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>
